@@ -1,6 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { SurahListItem } from "@/components/quran";
@@ -24,6 +24,12 @@ export default function QuranIndexScreen() {
   // Local state for search and filter
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+  const listRef = useRef<FlashList<Chapter>>(null);
+
+  // Scroll to top when filter or search changes
+  useEffect(() => {
+    listRef.current?.scrollToOffset({ offset: 0, animated: true });
+  }, [activeFilter, searchQuery]);
 
   // Fetch chapters
   const {
@@ -123,6 +129,7 @@ export default function QuranIndexScreen() {
       </View>
 
       <FlashList<Chapter>
+        ref={listRef}
         data={filteredChapters}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (

@@ -12,6 +12,7 @@ import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useChapters, useVersesByChapter, Verse } from "@/services/quranApi";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const TypedFlashList = FlashList as any;
 
@@ -31,6 +32,7 @@ export default function SurahDetailScreen() {
 
   const { colors } = useAppTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const [viewMode, setViewMode] = useState<ViewMode>("mushaf");
 
@@ -194,7 +196,15 @@ export default function SurahDetailScreen() {
   return (
     <ThemedView style={styles.container}>
       {/* Top Nav - Midnight Navy with Gold Action */}
-      <View style={[styles.navBar, { backgroundColor: colors.navyPrimary }]}>
+      <View
+        style={[
+          styles.navBar,
+          {
+            backgroundColor: colors.navyPrimary,
+            paddingTop: insets.top + Spacing.xs,
+          },
+        ]}
+      >
         <Pressable onPress={() => router.back()} style={styles.navButton}>
           <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
         </Pressable>
@@ -280,7 +290,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm,
-    height: 56,
+    minHeight: 56,
   },
   navButton: {
     padding: Spacing.xs,

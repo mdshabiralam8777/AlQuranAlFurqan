@@ -1,5 +1,6 @@
 import { Spacing } from "@/constants/spacing";
 import { useAppTheme } from "@/context/ThemeContext";
+import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedText, ThemedView } from "../ui";
@@ -9,17 +10,22 @@ type QuickAccessItem = {
   id: string;
   icon: string;
   label: string;
-  route: string; // later used for Expo Router navigation
+  route: string;
 };
 
 const ITEMS: QuickAccessItem[] = [
-  { id: "surah", icon: "book.pages.fill", label: "Surah", route: "/quran" },
+  {
+    id: "surah",
+    icon: "book.pages.fill",
+    label: "Surah",
+    route: "/(tabs)/quran",
+  },
   { id: "juz", icon: "book.closed.fill", label: "Juz", route: "/juz" },
   {
     id: "bookmark",
     icon: "bookmark.fill",
     label: "Bookmarks",
-    route: "/bookmarks",
+    route: "/(tabs)/bookmarks",
   },
   { id: "qibla", icon: "location.north.fill", label: "Qibla", route: "/qibla" },
   { id: "duas", icon: "hands.sparkles.fill", label: "Duas", route: "/duas" },
@@ -27,6 +33,11 @@ const ITEMS: QuickAccessItem[] = [
 
 export function QuickAccessRow() {
   const { colors } = useAppTheme();
+  const router = useRouter();
+
+  const handlePress = (route: string) => {
+    router.push(route as any);
+  };
 
   return (
     <View style={styles.container}>
@@ -34,6 +45,7 @@ export function QuickAccessRow() {
         {ITEMS.map((item) => (
           <Pressable
             key={item.id}
+            onPress={() => handlePress(item.route)}
             style={({ pressed }) => [
               styles.itemContainer,
               { opacity: pressed ? 0.7 : 1 },
@@ -75,7 +87,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     alignItems: "center",
-    width: 60, // smaller width
+    width: 60,
   },
   iconCircle: {
     width: 50,

@@ -20,6 +20,9 @@ export { MushafPage } from "./MushafPage";
 export { SajdahMarker } from "./SajdahMarker";
 
 // Dashboard Components
+export { HomeTabs } from "./HomeTabs";
+export { JuzListItem } from "./JuzListItem";
+export type { JuzInfo, JuzListItemProps } from "./JuzListItem";
 export { LastReadCard } from "./LastReadCard";
 export { QuickAccessRow } from "./QuickAccessRow";
 export { VerseOfTheDay } from "./VerseOfTheDay";
