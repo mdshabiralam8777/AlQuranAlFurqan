@@ -7,8 +7,8 @@
  *   GET /api/translations/:translation_id/by_ayah/:ayah_key
  */
 
-import { Router, Request, Response, NextFunction } from 'express';
-import { proxyClient } from '../middleware/authProxy';
+import { NextFunction, Request, Response, Router } from "express";
+import { proxyClient } from "../middleware/authProxy";
 
 export const translationsRouter = Router();
 
@@ -17,24 +17,27 @@ function forwardParams(req: Request): Record<string, unknown> {
 }
 
 // List all available translations
-translationsRouter.get('/list', async (req, res: Response, next: NextFunction) => {
-  try {
-    const { data } = await proxyClient.get('/resources/translations', {
-      params: forwardParams(req),
-    });
-    res.json(data);
-  } catch (err) {
-    next(err);
-  }
-});
+translationsRouter.get(
+  "/list",
+  async (req, res: Response, next: NextFunction) => {
+    try {
+      const { data } = await proxyClient.get("/resources/translations", {
+        params: forwardParams(req),
+      });
+      res.json(data);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 // Translation for a full chapter
 translationsRouter.get(
-  '/:translation_id/by_chapter/:chapter_number',
+  "/:translation_id/by_chapter/:chapter_number",
   async (req, res: Response, next: NextFunction) => {
     try {
       const { data } = await proxyClient.get(
-        `/quran/translations/${req.params.translation_id}/by_chapter/${req.params.chapter_number}`,
+        `/translations/${req.params.translation_id}/by_chapter/${req.params.chapter_number}`,
         { params: forwardParams(req) },
       );
       res.json(data);
@@ -46,11 +49,11 @@ translationsRouter.get(
 
 // Translation for a single Āyah
 translationsRouter.get(
-  '/:translation_id/by_ayah/:ayah_key',
+  "/:translation_id/by_ayah/:ayah_key",
   async (req, res: Response, next: NextFunction) => {
     try {
       const { data } = await proxyClient.get(
-        `/quran/translations/${req.params.translation_id}/by_ayah/${req.params.ayah_key}`,
+        `/translations/${req.params.translation_id}/by_ayah/${req.params.ayah_key}`,
         { params: forwardParams(req) },
       );
       res.json(data);

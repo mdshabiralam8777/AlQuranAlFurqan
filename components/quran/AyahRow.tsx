@@ -33,6 +33,7 @@ import { Spacing } from "@/constants/spacing";
 import {
   ARABIC_LINE_HEIGHT_RATIO,
   ArabicFontSizes,
+  BorderRadius,
 } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
 
@@ -121,7 +122,45 @@ export function AyahRow({
       accessibilityLabel={`Verse ${verse.verseKey}: ${verse.textUthmani}. ${verse.translationText ?? ""}`}
       accessibilityRole="button"
     >
-      <Animated.View style={[styles.container, animatedBg]}>
+      <Animated.View
+        style={[
+          styles.container,
+          animatedBg,
+          { borderBottomColor: colors.separator },
+        ]}
+      >
+        {/* Verse Key Badge */}
+        <View style={styles.verseKeyRow}>
+          <View
+            style={[
+              styles.verseKeyBadge,
+              { backgroundColor: colors.gold + "18" },
+            ]}
+          >
+            <ThemedText
+              role="caption"
+              color={colors.gold}
+              style={styles.verseKeyText}
+            >
+              {verse.verseKey}
+            </ThemedText>
+          </View>
+
+          {/* Sajdah indicator */}
+          {verse.isSajdah && (
+            <View
+              style={[
+                styles.sajdahBadge,
+                { backgroundColor: colors.gold + "25" },
+              ]}
+            >
+              <ThemedText role="caption" color={colors.gold}>
+                ۩ Sajdah
+              </ThemedText>
+            </View>
+          )}
+        </View>
+
         {/* Arabic text */}
         <ThemedText
           role="arabic"
@@ -260,8 +299,29 @@ export function AyahRow({
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: Spacing.lg,
-    paddingTop: Spacing.lg,
-    paddingBottom: Spacing.sm,
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.md,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  verseKeyRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: Spacing.sm,
+    gap: Spacing.sm,
+  },
+  verseKeyBadge: {
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 3,
+    borderRadius: BorderRadius.sm,
+  },
+  verseKeyText: {
+    fontWeight: "600",
+    fontSize: 12,
+  },
+  sajdahBadge: {
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 3,
+    borderRadius: BorderRadius.sm,
   },
   arabicText: {
     textAlign: "right",

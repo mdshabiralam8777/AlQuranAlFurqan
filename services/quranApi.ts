@@ -72,6 +72,43 @@ export interface VersesResponse {
   };
 }
 
+// --- Translation Types ---
+
+export interface Translation {
+  id: number;
+  name: string;
+  author_name: string;
+  slug: string;
+  language_name: string;
+  translated_name: TranslatedName;
+}
+
+export interface TranslationsListResponse {
+  translations: Translation[];
+}
+
+export interface TranslationText {
+  id: number;
+  resource_id: number;
+  text: string;
+  verse_key: string;
+  verse_number: number;
+  chapter_id: number;
+  juz_number: number;
+  language_name: string;
+}
+
+export interface TranslationByChapterResponse {
+  translations: TranslationText[];
+  meta: {
+    translation_name: string;
+    author_name: string;
+  };
+}
+
+/** Default translation — Saheeh International (most widely used English) */
+export const DEFAULT_TRANSLATION_ID = 20;
+
 // --- API Service Methods ---
 
 const quranApi = {
@@ -93,6 +130,28 @@ const quranApi = {
     );
     return data.verses;
   },
+
+  getTranslationsList: async (): Promise<Translation[]> => {
+    const { data } =
+      await apiClient.get<TranslationsListResponse>("/translations/list");
+    return data.translations;
+  },
+
+  getTranslationsByChapter: async (
+    translationId: number,
+    chapterId: number | string,
+  ): Promise<TranslationText[]> => {
+    const { data } = await apiClient.get<TranslationByChapterResponse>(
+      `/translations/${translationId}/by_chapter/${chapterId}`,
+      {
+        params: {
+          fields: "verse_key,verse_number,chapter_id",
+          per_page: 300, // Fetch all verses at once (Al-Baqarah max is 286)
+        },
+      },
+    );
+    return data.translations;
+  },
 };
 
 // --- TanStack Query Hooks ---
@@ -111,6 +170,31 @@ export const useVersesByChapter = (chapterId: number | string) => {
     queryFn: () => quranApi.getVersesByChapter(chapterId),
     enabled: !!chapterId,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
+  });
+};
+
+export const useTranslationsList = () => {
+  return useQuery({
+    queryKey: ["translations", "list"],
+    queryFn: quranApi.getTranslationsList,
+    staleTime: Infinity, // Available translations don't change
+  });
+};
+
+export const useTranslationsByChapter = (
+  translationId: number,
+  chapterId: number | string,
+) => {
+  return useQuery({
+    queryKey: [
+      "translations",
+      translationId.toString(),
+      "chapter",
+      chapterId.toString(),
+    ],
+    queryFn: () => quranApi.getTranslationsByChapter(translationId, chapterId),
+    enabled: !!chapterId && !!translationId,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours — translations are static
   });
 };
 

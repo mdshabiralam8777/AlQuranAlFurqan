@@ -3,20 +3,39 @@ import { FlashList } from "@shopify/flash-list";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { MushafPage, SurahHeader } from "@/components/quran";
 import { AyahRow } from "@/components/quran/AyahRow";
-import { ThemedText, ThemedView } from "@/components/ui";
+import { Bismillah, ThemedText, ThemedView } from "@/components/ui";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
-import { useChapters, useVersesByChapter, Verse } from "@/services/quranApi";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  DEFAULT_TRANSLATION_ID,
+  useChapters,
+  useTranslationsByChapter,
+  useVersesByChapter,
+  Verse,
+} from "@/services/quranApi";
 
 const TypedFlashList = FlashList as any;
 
 type ViewMode = "mushaf" | "translation";
+
+/** Strip HTML tags and footnote superscripts the QF API wraps translations in */
+function stripHtml(raw: string): string {
+  return raw
+    .replace(/<sup[^>]*>.*?<\/sup>/gi, "") // remove footnote markers
+    .replace(/<[^>]+>/g, "") // remove all remaining HTML tags
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .trim();
+}
 
 export default function SurahDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -25,10 +44,16 @@ export default function SurahDetailScreen() {
   const { data: chapters } = useChapters();
   const {
     data: verses,
-    isLoading,
-    isError,
-    refetch,
+    isLoading: versesLoading,
+    isError: versesError,
+    refetch: refetchVerses,
   } = useVersesByChapter(chapterId);
+
+  const {
+    data: translations,
+    isLoading: translationsLoading,
+    isError: translationsError,
+  } = useTranslationsByChapter(DEFAULT_TRANSLATION_ID, chapterId);
 
   const { colors } = useAppTheme();
   const router = useRouter();
@@ -39,6 +64,16 @@ export default function SurahDetailScreen() {
   const chapter = useMemo(() => {
     return chapters?.find((c) => c.id === chapterId);
   }, [chapters, chapterId]);
+
+  // Build a map from verse_key → translation text for O(1) lookups
+  const translationMap = useMemo(() => {
+    if (!translations) return new Map<string, string>();
+    const map = new Map<string, string>();
+    for (const t of translations) {
+      map.set(t.verse_key, stripHtml(t.text));
+    }
+    return map;
+  }, [translations]);
 
   // Group verses by their physical Mushaf page number for continuous rendering flow (Mushaf Mode)
   const pages = useMemo(() => {
@@ -80,19 +115,33 @@ export default function SurahDetailScreen() {
   };
 
   const renderTranslationItem = ({ item }: { item: Verse }) => {
+    const translationText =
+      translationMap.get(item.verse_key) ?? "Loading translation…";
+
     return (
       <AyahRow
         verse={{
           id: item.id,
           verseKey: item.verse_key,
           textUthmani: item.text_uthmani || item.text_imlaei || "",
-          translationText:
-            "Translation placeholder. Real translations will be loaded here in future phases.",
+          translationText,
           isSajdah: !!item.sajdah_number,
         }}
         showTranslation={true}
         viewMode="translation"
       />
+    );
+  };
+
+  const renderTranslationBismillah = () => {
+    const showBismillah =
+      chapter && (chapter.bismillah_pre || chapter.id === 1);
+    if (!showBismillah) return null;
+
+    return (
+      <View style={styles.bismillahWrapper}>
+        <Bismillah />
+      </View>
     );
   };
 
@@ -157,9 +206,17 @@ export default function SurahDetailScreen() {
             </ThemedText>
           </Pressable>
         </View>
+
+        {/* Bismillah in translation mode */}
+        {viewMode === "translation" && renderTranslationBismillah()}
       </View>
     );
   };
+
+  const isLoading =
+    versesLoading || (viewMode === "translation" && translationsLoading);
+  const isError =
+    versesError || (viewMode === "translation" && translationsError);
 
   if (isLoading) {
     return (
@@ -182,7 +239,7 @@ export default function SurahDetailScreen() {
           Failed to load verses.
         </ThemedText>
         <Pressable
-          onPress={() => refetch()}
+          onPress={() => refetchVerses()}
           style={[styles.retryButton, { backgroundColor: colors.gold }]}
         >
           <ThemedText role="label" color={colors.navyPrimary}>
@@ -235,7 +292,7 @@ export default function SurahDetailScreen() {
           renderItem={renderTranslationItem}
           keyExtractor={(item: any) => item.id.toString()}
           ListHeaderComponent={renderHeader}
-          estimatedItemSize={150}
+          estimatedItemSize={200}
           contentContainerStyle={{ paddingBottom: Spacing.xxl }}
           showsVerticalScrollIndicator={false}
         />
@@ -303,5 +360,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "600",
     fontSize: 18,
+  },
+  bismillahWrapper: {
+    alignItems: "center",
+    marginTop: Spacing.lg,
+    marginBottom: Spacing.md,
   },
 });
