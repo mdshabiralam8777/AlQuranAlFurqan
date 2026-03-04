@@ -1,12 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { MushafPage, SurahHeader } from "@/components/quran";
-import { AyahRow } from "@/components/quran/AyahRow";
+import { AyahRow, VerseData } from "@/components/quran/AyahRow";
 import { Bismillah, ThemedText, ThemedView } from "@/components/ui";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Spacing } from "@/constants/spacing";
@@ -19,6 +19,7 @@ import {
   useVersesByChapter,
   Verse,
 } from "@/services/quranApi";
+import { useBookmarkStore } from "@/store/bookmarkStore";
 
 const TypedFlashList = FlashList as any;
 
@@ -38,8 +39,13 @@ function stripHtml(raw: string): string {
 }
 
 export default function SurahDetailScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, verse, mode } = useLocalSearchParams<{
+    id: string;
+    verse?: string;
+    mode?: "mushaf" | "translation";
+  }>();
   const chapterId = parseInt(id, 10);
+  const initialVerse = verse ? parseInt(verse, 10) : undefined;
 
   const { data: chapters } = useChapters();
   const {
@@ -59,7 +65,14 @@ export default function SurahDetailScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const [viewMode, setViewMode] = useState<ViewMode>("mushaf");
+  const [viewMode, setViewMode] = useState<ViewMode>(
+    mode || (initialVerse ? "translation" : "mushaf"),
+  );
+
+  const translationListRef = useRef<any>(null);
+  const mushafListRef = useRef<any>(null);
+
+  const { isBookmarked, toggleBookmark } = useBookmarkStore();
 
   const chapter = useMemo(() => {
     return chapters?.find((c) => c.id === chapterId);
@@ -96,6 +109,12 @@ export default function SurahDetailScreen() {
       .sort((a, b) => a.pageNumber - b.pageNumber);
   }, [verses]);
 
+  // Pre-compute bookmarked verse keys for O(1) lookups
+  const { bookmarks } = useBookmarkStore();
+  const bookmarkedVerseKeys = useMemo(() => {
+    return new Set(bookmarks.map((b) => b.verseKey));
+  }, [bookmarks]);
+
   const renderMushafItem = ({
     item,
   }: {
@@ -110,9 +129,38 @@ export default function SurahDetailScreen() {
         pageNumber={item.pageNumber}
         verses={item.verses}
         showBismillah={!!showBismillah}
+        onVersePress={handleMushafBookmark}
+        bookmarkedVerseKeys={bookmarkedVerseKeys}
       />
     );
   };
+
+  const handleMushafBookmark = useCallback(
+    (verse: Verse) => {
+      const translationText = translationMap.get(verse.verse_key);
+      toggleBookmark({
+        verseKey: verse.verse_key,
+        textUthmani: verse.text_uthmani || verse.text_imlaei || "",
+        translationText,
+        surahName: chapter?.name_simple || "Surah",
+        source: "mushaf",
+      });
+    },
+    [chapter, toggleBookmark, translationMap],
+  );
+
+  const handleBookmark = useCallback(
+    (verse: VerseData) => {
+      toggleBookmark({
+        verseKey: verse.verseKey,
+        textUthmani: verse.textUthmani,
+        translationText: verse.translationText,
+        surahName: chapter?.name_simple || "Surah",
+        source: "translation",
+      });
+    },
+    [chapter, toggleBookmark],
+  );
 
   const renderTranslationItem = ({ item }: { item: Verse }) => {
     const translationText =
@@ -127,6 +175,8 @@ export default function SurahDetailScreen() {
           translationText,
           isSajdah: !!item.sajdah_number,
         }}
+        isBookmarked={isBookmarked(item.verse_key)}
+        onBookmark={handleBookmark}
         showTranslation={true}
         viewMode="translation"
       />
@@ -278,6 +328,7 @@ export default function SurahDetailScreen() {
 
       {viewMode === "mushaf" ? (
         <TypedFlashList
+          ref={mushafListRef}
           data={pages}
           renderItem={renderMushafItem}
           keyExtractor={(item: any) => item.pageNumber.toString()}
@@ -285,9 +336,25 @@ export default function SurahDetailScreen() {
           estimatedItemSize={600}
           contentContainerStyle={{ paddingBottom: Spacing.xxl }}
           showsVerticalScrollIndicator={false}
+          onLoad={() => {
+            if (initialVerse && pages && pages.length > 0) {
+              const targetPageIndex = pages.findIndex((p) =>
+                p.verses.some((v) => v.verse_number === initialVerse),
+              );
+              if (targetPageIndex > 0) {
+                setTimeout(() => {
+                  mushafListRef.current?.scrollToIndex({
+                    index: targetPageIndex,
+                    animated: true,
+                  });
+                }, 300);
+              }
+            }
+          }}
         />
       ) : (
         <TypedFlashList
+          ref={translationListRef}
           data={verses}
           renderItem={renderTranslationItem}
           keyExtractor={(item: any) => item.id.toString()}
@@ -295,6 +362,21 @@ export default function SurahDetailScreen() {
           estimatedItemSize={200}
           contentContainerStyle={{ paddingBottom: Spacing.xxl }}
           showsVerticalScrollIndicator={false}
+          onLoad={() => {
+            if (initialVerse && verses && verses.length > 0) {
+              const targetIndex = verses.findIndex(
+                (v) => v.verse_number === initialVerse,
+              );
+              if (targetIndex > 0) {
+                setTimeout(() => {
+                  translationListRef.current?.scrollToIndex({
+                    index: targetIndex,
+                    animated: true,
+                  });
+                }, 300);
+              }
+            }
+          }}
         />
       )}
     </ThemedView>

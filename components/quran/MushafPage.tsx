@@ -10,6 +10,10 @@ interface MushafPageProps {
   pageNumber: number;
   verses: Verse[];
   showBismillah?: boolean;
+  /** Called when a verse marker is tapped (for bookmarking) */
+  onVersePress?: (verse: Verse) => void;
+  /** Set of bookmarked verse keys for visual indicator */
+  bookmarkedVerseKeys?: Set<string>;
 }
 
 /**
@@ -19,6 +23,8 @@ export function MushafPage({
   pageNumber,
   verses,
   showBismillah,
+  onVersePress,
+  bookmarkedVerseKeys,
 }: MushafPageProps) {
   return (
     <View style={styles.pageContainer}>
@@ -36,8 +42,8 @@ export function MushafPage({
           // Since we already show the SVG Bismillah at the top, we remove the Arabic text copy
           // from the verse flow, but we STILL render its verse marker ﴿١﴾.
           if (showBismillah && verse.verse_number === 1) {
-            const bismillahUthmani = "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ";
-            const bismillahImlaei = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
+            const bismillahUthmani = "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ";
+            const bismillahImlaei = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
 
             verseText = verseText
               .replace(bismillahUthmani, "")
@@ -50,7 +56,11 @@ export function MushafPage({
               <ThemedText role="arabic" style={styles.inlineText}>
                 {verseText}
               </ThemedText>
-              <InlineVerseMarker verseNumber={verse.verse_number} />
+              <InlineVerseMarker
+                verseNumber={verse.verse_number}
+                onPress={onVersePress ? () => onVersePress(verse) : undefined}
+                isBookmarked={bookmarkedVerseKeys?.has(verse.verse_key)}
+              />
               <ThemedText role="arabic" style={styles.inlineText}>
                 {" "}
               </ThemedText>

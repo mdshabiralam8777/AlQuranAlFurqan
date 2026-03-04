@@ -11,6 +11,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 
 import { AppThemeProvider, useAppTheme } from "@/context/ThemeContext";
@@ -67,7 +68,7 @@ export default function RootLayout() {
     Inter_700Bold,
     Amiri_400Regular,
     Amiri_700Bold,
-    "KFGQPC-Uthmanic-Hafs": require("../assets/fonts/KFGQPCUthmanicScriptHAFS.ttf"),
+    "KFGQPC-Uthmanic-Hafs": require("../assets/fonts/KFGQPC Uthman Taha Naskh Regular.ttf"),
   });
 
   useEffect(() => {
@@ -81,10 +82,12 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AppThemeProvider>
-        <RootStack />
-      </AppThemeProvider>
-    </QueryClientProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <AppThemeProvider>
+          <RootStack />
+        </AppThemeProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
