@@ -1,11 +1,14 @@
 // Fallback for using MaterialIcons on Android and web.
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
-import { ComponentProps } from 'react';
-import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { SymbolViewProps, SymbolWeight } from "expo-symbols";
+import { ComponentProps } from "react";
+import { OpaqueColorValue, type StyleProp, type TextStyle } from "react-native";
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
+type IconMapping = Record<
+  SymbolViewProps["name"],
+  ComponentProps<typeof MaterialIcons>["name"]
+>;
 type IconSymbolName = keyof typeof MAPPING;
 
 /**
@@ -14,10 +17,43 @@ type IconSymbolName = keyof typeof MAPPING;
  * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
  */
 const MAPPING = {
-  'house.fill': 'home',
-  'paperplane.fill': 'send',
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'chevron-right',
+  // Navigation
+  "house.fill": "home",
+  "book.fill": "menu-book",
+  "bookmark.fill": "bookmark",
+  "gearshape.fill": "settings",
+
+  // Actions
+  magnifyingglass: "search",
+  "multiply.circle.fill": "cancel",
+  bookmark: "bookmark-border",
+  "square.and.arrow.up": "share",
+  "square.and.pencil": "edit",
+  "bell.fill": "notifications",
+
+  // Components
+  "book.pages.fill": "import-contacts",
+  "play.fill": "play-arrow",
+  "play.circle.fill": "play-circle",
+  book: "menu-book",
+  "character.book.closed.fill": "library-books",
+
+  // Settings
+  "moon.circle.fill": "dark-mode",
+  "textformat.size": "format-size",
+  minus: "remove",
+  plus: "add",
+  "slider.horizontal.3": "tune",
+
+  // Quick Access Row
+  "book.closed.fill": "menu-book",
+  "location.north.fill": "explore",
+  "hands.sparkles.fill": "auto-awesome",
+
+  // Default Expo
+  "paperplane.fill": "send",
+  "chevron.left.forwardslash.chevron.right": "code",
+  "chevron.right": "chevron-right",
 } as IconMapping;
 
 /**
@@ -37,5 +73,12 @@ export function IconSymbol({
   style?: StyleProp<TextStyle>;
   weight?: SymbolWeight;
 }) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+  return (
+    <MaterialIcons
+      color={color}
+      size={size}
+      name={MAPPING[name]}
+      style={style}
+    />
+  );
 }

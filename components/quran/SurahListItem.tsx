@@ -2,16 +2,17 @@
  * SurahListItem — a single row in the Surah list.
  *
  * Layout (LTR view, adapts to RTL):
- *   [Number Badge]  [Arabic Name]         [English + Āyāt count]
- *                   [Transliteration]     [Meccan/Medinan chip]
+ *   [Number Badge]  [English Name & Meta]  [Arabic Name] [Play Shortcut]
  */
 
-import React from 'react';
-import { Pressable, View, StyleSheet } from 'react-native';
+import { useRouter } from "expo-router";
+import React from "react";
+import { Pressable, StyleSheet, View } from "react-native";
 
-import { ThemedText } from '@/components/ui/ThemedText';
-import { useAppTheme } from '@/context/ThemeContext';
-import { Spacing, BorderRadius, TouchTarget } from '@/constants/spacing';
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { ThemedText } from "@/components/ui/ThemedText";
+import { Spacing, TouchTarget } from "@/constants/spacing";
+import { useAppTheme } from "@/context/ThemeContext";
 
 export interface SurahListItemProps {
   surahNumber: number;
@@ -19,8 +20,7 @@ export interface SurahListItemProps {
   nameEnglish: string;
   nameTransliteration: string;
   versesCount: number;
-  revelationType: 'Meccan' | 'Medinan';
-  onPress: () => void;
+  revelationType: "Meccan" | "Medinan";
 }
 
 export function SurahListItem({
@@ -30,55 +30,67 @@ export function SurahListItem({
   nameTransliteration,
   versesCount,
   revelationType,
-  onPress,
 }: SurahListItemProps) {
   const { colors } = useAppTheme();
+  const router = useRouter();
 
-  const revelationColor = revelationType === 'Meccan' ? '#8B5E3C' : colors.green;
+  const handlePress = () => {
+    router.push(`/surah/${surahNumber}`);
+  };
 
   return (
     <Pressable
-      onPress={onPress}
-      android_ripple={{ color: colors.goldLight }}
+      onPress={handlePress}
       style={({ pressed }) => [
         styles.container,
-        { borderBottomColor: colors.separator },
-        pressed && { opacity: 0.75 },
+        {
+          borderBottomColor: colors.separator,
+          backgroundColor: pressed ? colors.bgSecondary : colors.bgPrimary,
+        },
       ]}
       accessibilityRole="button"
       accessibilityLabel={`Surah ${surahNumber}, ${nameTransliteration}, ${versesCount} verses`}
     >
-      {/* Number badge */}
-      <View style={[styles.badge, { borderColor: colors.gold, backgroundColor: colors.bgSecondary }]}>
-        <ThemedText role="verseNumber" color={colors.gold}>
-          {surahNumber}
-        </ThemedText>
-      </View>
-
-      {/* Center: Arabic name + transliteration */}
-      <View style={styles.center}>
-        <ThemedText role="arabicSmall" color={colors.textArabic} numberOfLines={1}>
-          {nameArabic}
-        </ThemedText>
-        <ThemedText role="caption" color={colors.textSecondary} numberOfLines={1}>
-          {nameTransliteration}
-        </ThemedText>
-      </View>
-
-      {/* Right: English name + meta */}
-      <View style={styles.right}>
-        <ThemedText role="bodyMedium" color={colors.textPrimary} numberOfLines={1} style={styles.englishName}>
-          {nameEnglish}
-        </ThemedText>
-        <View style={styles.metaRow}>
-          <ThemedText role="caption" color={colors.textSecondary}>
-            {versesCount} Āyāt
-          </ThemedText>
-          <View style={[styles.revDot, { backgroundColor: revelationColor }]} />
-          <ThemedText role="caption" color={revelationColor}>
-            {revelationType}
+      {/* Number badge (Octagonal/Star shape) */}
+      <View style={[styles.badgeContainer, { borderColor: colors.gold }]}>
+        <View style={styles.numberWrapper}>
+          <ThemedText role="verseNumber" color={colors.textPrimary}>
+            {surahNumber}
           </ThemedText>
         </View>
+      </View>
+
+      {/* Surah Details (Left/Center) */}
+      <View style={styles.contentContainer}>
+        <ThemedText role="subtitle" color={colors.textPrimary}>
+          {nameTransliteration}
+        </ThemedText>
+
+        <View style={styles.metaContainer}>
+          <ThemedText role="caption" color={colors.textSecondary}>
+            {revelationType}
+          </ThemedText>
+          <View
+            style={[styles.dot, { backgroundColor: colors.textSecondary }]}
+          />
+          <ThemedText role="caption" color={colors.textSecondary}>
+            {versesCount} Ayahs
+          </ThemedText>
+        </View>
+      </View>
+
+      {/* Right Side: Arabic Name & Play Shortcut */}
+      <View style={styles.rightContainer}>
+        <ThemedText role="arabicSmall" color={colors.gold}>
+          {nameArabic}
+        </ThemedText>
+
+        <Pressable
+          style={[styles.playButton, { backgroundColor: colors.bgSecondary }]}
+          hitSlop={10}
+        >
+          <IconSymbol name="play.fill" size={12} color={colors.gold} />
+        </Pressable>
       </View>
     </Pressable>
   );
@@ -86,45 +98,50 @@ export function SurahListItem({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.md,
     borderBottomWidth: StyleSheet.hairlineWidth,
     minHeight: TouchTarget.min,
-    gap: Spacing.md,
   },
-  badge: {
-    width: 40,
-    height: 40,
-    borderRadius: BorderRadius.full,
-    borderWidth: 1.5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
+  badgeContainer: {
+    width: 44,
+    height: 44,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: Spacing.md,
   },
-  center: {
+  numberWrapper: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  contentContainer: {
     flex: 1,
-    alignItems: 'flex-end', // Arabic is RTL — right-align
-    gap: Spacing.xxs,
+    justifyContent: "center",
   },
-  right: {
-    alignItems: 'flex-end',
-    minWidth: 80,
-    gap: Spacing.xxs,
+  metaContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: Spacing.xs,
   },
-  englishName: {
-    textAlign: 'right',
+  dot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    marginHorizontal: Spacing.sm,
   },
-  metaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.xs,
-    justifyContent: 'flex-end',
+  rightContainer: {
+    alignItems: "flex-end",
+    justifyContent: "center",
   },
-  revDot: {
-    width: 5,
-    height: 5,
-    borderRadius: BorderRadius.full,
+  playButton: {
+    marginTop: Spacing.sm,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

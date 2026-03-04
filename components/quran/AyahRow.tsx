@@ -16,31 +16,35 @@
  *  - onPlay / onBookmark / onNote / onShare → action callbacks
  */
 
-import React, { useCallback, useState } from 'react';
-import { View, Pressable, StyleSheet, Share } from 'react-native';
+import React, { useCallback, useState } from "react";
+import { Pressable, Share, StyleSheet, View } from "react-native";
 import Animated, {
-  useAnimatedStyle,
-  withTiming,
   interpolateColor,
+  useAnimatedStyle,
   useSharedValue,
-  withSequence,
   withDelay,
-} from 'react-native-reanimated';
+  withSequence,
+  withTiming,
+} from "react-native-reanimated";
 
-import { ThemedText } from '@/components/ui/ThemedText';
-import { useAppTheme } from '@/context/ThemeContext';
-import { Spacing } from '@/constants/spacing';
-import { ArabicFontSizes, ARABIC_LINE_HEIGHT_RATIO } from '@/constants/typography';
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { ThemedText } from "@/components/ui/ThemedText";
+import { Spacing } from "@/constants/spacing";
+import {
+  ARABIC_LINE_HEIGHT_RATIO,
+  ArabicFontSizes,
+} from "@/constants/typography";
+import { useAppTheme } from "@/context/ThemeContext";
 
 export interface VerseData {
   id: number;
-  verseKey: string;   // e.g. "2:255"
+  verseKey: string; // e.g. "2:255"
   textUthmani: string;
   translationText?: string;
   isSajdah?: boolean;
 }
 
-type ViewMode = 'arabic' | 'translation' | 'wordByWord';
+type ViewMode = "arabic" | "translation" | "wordByWord";
 
 interface AyahRowProps {
   verse: VerseData;
@@ -61,7 +65,7 @@ export function AyahRow({
   isPlaying = false,
   isBookmarked = false,
   showTranslation = true,
-  viewMode = 'translation',
+  viewMode = "translation",
   onPlay,
   onBookmark,
   onNote,
@@ -101,7 +105,7 @@ export function AyahRow({
   const handleShare = useCallback(async () => {
     try {
       await Share.share({
-        message: `${verse.textUthmani}\n\n${verse.translationText ?? ''}\n\n— Quran ${verse.verseKey}`,
+        message: `${verse.textUthmani}\n\n${verse.translationText ?? ""}\n\n— Quran ${verse.verseKey}`,
       });
     } catch {
       // silently ignore share cancel
@@ -114,7 +118,7 @@ export function AyahRow({
     <Pressable
       onPress={toggleActions}
       onLongPress={() => onPlay?.(verse)}
-      accessibilityLabel={`Verse ${verse.verseKey}: ${verse.textUthmani}. ${verse.translationText ?? ''}`}
+      accessibilityLabel={`Verse ${verse.verseKey}: ${verse.textUthmani}. ${verse.translationText ?? ""}`}
       accessibilityRole="button"
     >
       <Animated.View style={[styles.container, animatedBg]}>
@@ -122,15 +126,24 @@ export function AyahRow({
         <ThemedText
           role="arabic"
           fontSize={arabicFontSize}
-          style={[styles.arabicText, { lineHeight: arabicFontSize * ARABIC_LINE_HEIGHT_RATIO }]}
+          style={[
+            styles.arabicText,
+            { lineHeight: arabicFontSize * ARABIC_LINE_HEIGHT_RATIO },
+          ]}
           color={colors.textArabic}
         >
           {verse.textUthmani}
         </ThemedText>
 
         {/* Translation */}
-        {(showTranslation || viewMode === 'translation') && verse.translationText ? (
-          <View style={[styles.translationContainer, { borderTopColor: colors.separator }]}>
+        {(showTranslation || viewMode === "translation") &&
+        verse.translationText ? (
+          <View
+            style={[
+              styles.translationContainer,
+              { borderTopColor: colors.separator },
+            ]}
+          >
             <ThemedText role="translation" color={colors.textSecondary}>
               {verse.translationText}
             </ThemedText>
@@ -139,14 +152,23 @@ export function AyahRow({
 
         {/* Action bar — shown on tap */}
         {showActions && (
-          <View style={[styles.actionBar, { borderTopColor: colors.separator }]}>
+          <View
+            style={[styles.actionBar, { borderTopColor: colors.separator }]}
+          >
             {/* Play */}
             <Pressable
               style={styles.actionBtn}
               onPress={() => onPlay?.(verse)}
               accessibilityLabel="Play verse"
             >
-              <ThemedText role="caption" color={colors.green}>▶ Play</ThemedText>
+              <IconSymbol name="play.fill" size={16} color={colors.gold} />
+              <ThemedText
+                role="caption"
+                color={colors.gold}
+                style={styles.actionLabel}
+              >
+                Play
+              </ThemedText>
             </Pressable>
 
             {/* Bookmark */}
@@ -154,10 +176,21 @@ export function AyahRow({
               <Pressable
                 style={styles.actionBtn}
                 onPress={handleBookmark}
-                accessibilityLabel={isBookmarked ? 'Remove bookmark' : 'Bookmark verse'}
+                accessibilityLabel={
+                  isBookmarked ? "Remove bookmark" : "Bookmark verse"
+                }
               >
-                <ThemedText role="caption" color={colors.gold}>
-                  {isBookmarked ? '🔖 Saved' : '🔖 Save'}
+                <IconSymbol
+                  name={isBookmarked ? "bookmark.fill" : "bookmark"}
+                  size={16}
+                  color={colors.gold}
+                />
+                <ThemedText
+                  role="caption"
+                  color={colors.gold}
+                  style={styles.actionLabel}
+                >
+                  {isBookmarked ? "Saved" : "Save"}
                 </ThemedText>
               </Pressable>
             </Animated.View>
@@ -168,7 +201,18 @@ export function AyahRow({
               onPress={handleShare}
               accessibilityLabel="Share verse"
             >
-              <ThemedText role="caption" color={colors.textSecondary}>↗ Share</ThemedText>
+              <IconSymbol
+                name="square.and.arrow.up"
+                size={16}
+                color={colors.textSecondary}
+              />
+              <ThemedText
+                role="caption"
+                color={colors.textSecondary}
+                style={styles.actionLabel}
+              >
+                Share
+              </ThemedText>
             </Pressable>
 
             {/* Note */}
@@ -177,7 +221,18 @@ export function AyahRow({
               onPress={() => onNote?.(verse)}
               accessibilityLabel="Add note"
             >
-              <ThemedText role="caption" color={colors.textSecondary}>✎ Note</ThemedText>
+              <IconSymbol
+                name="square.and.pencil"
+                size={16}
+                color={colors.textSecondary}
+              />
+              <ThemedText
+                role="caption"
+                color={colors.textSecondary}
+                style={styles.actionLabel}
+              >
+                Note
+              </ThemedText>
             </Pressable>
 
             {/* Tafsir */}
@@ -186,7 +241,14 @@ export function AyahRow({
               onPress={() => onTafsir?.(verse)}
               accessibilityLabel="View Tafsir"
             >
-              <ThemedText role="caption" color={colors.textSecondary}>📖 Tafsir</ThemedText>
+              <IconSymbol name="book" size={16} color={colors.textSecondary} />
+              <ThemedText
+                role="caption"
+                color={colors.textSecondary}
+                style={styles.actionLabel}
+              >
+                Tafsir
+              </ThemedText>
             </Pressable>
           </View>
         )}
@@ -202,8 +264,8 @@ const styles = StyleSheet.create({
     paddingBottom: Spacing.sm,
   },
   arabicText: {
-    textAlign: 'right',
-    writingDirection: 'rtl',
+    textAlign: "right",
+    writingDirection: "rtl",
     marginBottom: Spacing.sm,
   },
   translationContainer: {
@@ -212,18 +274,23 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.xs,
   },
   actionBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderTopWidth: StyleSheet.hairlineWidth,
     marginTop: Spacing.sm,
     paddingTop: Spacing.sm,
     gap: Spacing.xs,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
   },
   actionBtn: {
     paddingVertical: Spacing.xs,
     paddingHorizontal: Spacing.sm,
     minHeight: 36,
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  actionLabel: {
+    marginLeft: 6,
   },
 });

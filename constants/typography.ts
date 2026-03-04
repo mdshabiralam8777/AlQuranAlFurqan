@@ -9,22 +9,22 @@
 
 export const FontFamily = {
   /** Used for all Quranic Arabic text and Bismillah */
-  quranArabic: 'KFGQPC-Uthmanic-Hafs',
+  quranArabic: "KFGQPC-Uthmanic-Hafs",
   /** Used for Surah name headers in Arabic */
-  amiri: 'Amiri',
-  amiriBold: 'Amiri-Bold',
+  amiri: "Amiri_400Regular",
+  amiriBold: "Amiri_700Bold",
   /** Used for all UI labels, translations, and English text */
-  inter: 'Inter',
-  interMedium: 'Inter-Medium',
-  interSemiBold: 'Inter-SemiBold',
-  interBold: 'Inter-Bold',
+  inter: "Inter_400Regular",
+  interMedium: "Inter_500Medium",
+  interSemiBold: "Inter_600SemiBold",
+  interBold: "Inter_700Bold",
 } as const;
 
 /** Arabic font size steps — user can pick one from FontSizeStep */
 export const ArabicFontSizes = {
   xs: 18,
   sm: 21,
-  md: 26,   // default
+  md: 26, // default
   lg: 30,
   xl: 36,
 } as const;
@@ -53,8 +53,17 @@ export const LineHeight = {
 } as const;
 
 export const FontWeight = {
-  regular: '400' as const,
-  medium: '500' as const,
-  semibold: '600' as const,
-  bold: '700' as const,
+  regular: "400" as const,
+  medium: "500" as const,
+  semibold: "600" as const,
+  bold: "700" as const,
+} as const;
+
+export const BorderRadius = {
+  sm: 4,
+  md: 8,
+  lg: 12,
+  xl: 16,
+  xxl: 24,
+  round: 9999,
 } as const;

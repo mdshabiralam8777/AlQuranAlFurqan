@@ -4,28 +4,35 @@
  * Supports Arabic script role which applies the Uthmanic font + RTL alignment.
  */
 
-import { Text, StyleSheet, type TextProps } from 'react-native';
+import { StyleSheet, Text, type TextProps } from "react-native";
 
-import { useAppTheme } from '@/context/ThemeContext';
-import { FontFamily, FontSize, LineHeight, FontWeight, ArabicFontSizes, ARABIC_LINE_HEIGHT_RATIO } from '@/constants/typography';
+import {
+  ARABIC_LINE_HEIGHT_RATIO,
+  ArabicFontSizes,
+  FontFamily,
+  FontSize,
+  FontWeight,
+  LineHeight,
+} from "@/constants/typography";
+import { useAppTheme } from "@/context/ThemeContext";
 
 export type TextRole =
-  | 'body'
-  | 'bodyMedium'
-  | 'bodySemiBold'
-  | 'caption'
-  | 'label'
-  | 'subtitle'
-  | 'title'
-  | 'heading'
-  | 'arabic'           // Arabic Quran text (Uthmanic Hafs, large, RTL)
-  | 'arabicSmall'      // Arabic UI labels  (Amiri, smaller)
-  | 'surahName'        // Surah name header (Amiri Bold)
-  | 'translation'      // Translation text  (Inter, slightly smaller)
-  | 'verseNumber'      // Verse badge label (Amiri, small)
-  | 'link';
+  | "body"
+  | "bodyMedium"
+  | "bodySemiBold"
+  | "caption"
+  | "label"
+  | "subtitle"
+  | "title"
+  | "heading"
+  | "arabic" // Arabic Quran text (Uthmanic Hafs, large, RTL)
+  | "arabicSmall" // Arabic UI labels  (Amiri, smaller)
+  | "surahName" // Surah name header (Amiri Bold)
+  | "translation" // Translation text  (Inter, slightly smaller)
+  | "verseNumber" // Verse badge label (Amiri, small)
+  | "link";
 
-export type ThemedTextProps = TextProps & {
+export type ThemedTextProps = Omit<TextProps, "role"> & {
   role?: TextRole;
   /** Override color directly */
   color?: string;
@@ -34,7 +41,7 @@ export type ThemedTextProps = TextProps & {
 };
 
 export function ThemedText({
-  role = 'body',
+  role = "body",
   style,
   color,
   fontSize,
@@ -42,22 +49,30 @@ export function ThemedText({
 }: ThemedTextProps) {
   const { colors } = useAppTheme();
 
-  const resolvedColor = color ?? (
-    role === 'arabic' || role === 'surahName' || role === 'verseNumber'
+  const resolvedColor =
+    color ??
+    (role === "arabic" || role === "surahName" || role === "verseNumber"
       ? colors.textArabic
-      : role === 'caption' || role === 'label'
-      ? colors.textSecondary
-      : role === 'link'
-      ? colors.green
-      : colors.textPrimary
-  );
+      : role === "caption" || role === "label"
+        ? colors.textSecondary
+        : role === "link"
+          ? colors.gold
+          : colors.textPrimary);
 
   return (
     <Text
       style={[
         styles[role],
         { color: resolvedColor },
-        fontSize ? { fontSize, lineHeight: role === 'arabic' ? fontSize * ARABIC_LINE_HEIGHT_RATIO : undefined } : undefined,
+        fontSize
+          ? {
+              fontSize,
+              lineHeight:
+                role === "arabic"
+                  ? fontSize * ARABIC_LINE_HEIGHT_RATIO
+                  : undefined,
+            }
+          : undefined,
         style,
       ]}
       {...rest}
@@ -118,23 +133,23 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.quranArabic,
     fontSize: ArabicFontSizes.md,
     lineHeight: ArabicFontSizes.md * ARABIC_LINE_HEIGHT_RATIO,
-    textAlign: 'right',
-    writingDirection: 'rtl',
+    textAlign: "right",
+    writingDirection: "rtl",
     fontWeight: FontWeight.regular,
   },
   arabicSmall: {
     fontFamily: FontFamily.amiri,
     fontSize: FontSize.md,
     lineHeight: FontSize.md * ARABIC_LINE_HEIGHT_RATIO,
-    textAlign: 'right',
-    writingDirection: 'rtl',
+    textAlign: "right",
+    writingDirection: "rtl",
     fontWeight: FontWeight.regular,
   },
   surahName: {
     fontFamily: FontFamily.amiriBold,
     fontSize: FontSize.xxl,
     lineHeight: FontSize.xxl * ARABIC_LINE_HEIGHT_RATIO,
-    textAlign: 'center',
+    textAlign: "center",
     fontWeight: FontWeight.bold,
   },
   translation: {
@@ -147,7 +162,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.amiri,
     fontSize: FontSize.sm,
     lineHeight: FontSize.sm * LineHeight.normal,
-    textAlign: 'center',
+    textAlign: "center",
     fontWeight: FontWeight.regular,
   },
   link: {
@@ -155,6 +170,6 @@ const styles = StyleSheet.create({
     fontSize: FontSize.base,
     lineHeight: FontSize.base * LineHeight.normal,
     fontWeight: FontWeight.medium,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
 });

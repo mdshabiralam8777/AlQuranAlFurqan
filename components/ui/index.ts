@@ -3,12 +3,16 @@
  * Import from '@/components/ui' for convenience.
  */
 
-export { ThemedText } from './ThemedText';
-export type { ThemedTextProps, TextRole } from './ThemedText';
+export { ThemedText } from "./ThemedText";
+export type { TextRole, ThemedTextProps } from "./ThemedText";
 
-export { ThemedView } from './ThemedView';
-export type { ThemedViewProps, ViewLayer } from './ThemedView';
+export { ThemedView } from "./ThemedView";
+export type { ThemedViewProps, ViewLayer } from "./ThemedView";
 
-export { IslamicBorder } from './IslamicBorder';
-export { IslamicDivider } from './IslamicDivider';
-export { Bismillah } from './Bismillah';
+export { FilterChip } from "./FilterChip";
+export { NavyHeader } from "./NavyHeader";
+export { SearchBar } from "./SearchBar";
+
+export { Bismillah } from "@/assets/svgs/Bismillah";
+export { IslamicBorder } from "@/assets/svgs/IslamicBorder";
+export { IslamicDivider } from "@/assets/svgs/IslamicDivider";

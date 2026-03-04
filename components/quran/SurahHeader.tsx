@@ -1,21 +1,10 @@
-/**
- * SurahHeader — the decorative banner shown at the top of each Surah reading screen.
- * Wraps surah metadata inside an IslamicBorder frame.
- *
- * Layout:
- *   [IslamicBorder]
- *     Arabic name (large, centered)
- *     English name + transliteration
- *     ◆ Revelation type  •  114 Āyāt  •  Juz X
- */
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-
-import { IslamicBorder } from '@/components/ui/IslamicBorder';
-import { ThemedText } from '@/components/ui/ThemedText';
-import { useAppTheme } from '@/context/ThemeContext';
-import { Spacing } from '@/constants/spacing';
+import { IslamicBorder } from "@/assets/svgs/IslamicBorder";
+import { ThemedText } from "@/components/ui/ThemedText";
+import { Spacing } from "@/constants/spacing";
+import { useAppTheme } from "@/context/ThemeContext";
 
 export interface SurahHeaderProps {
   surahNumber: number;
@@ -23,7 +12,7 @@ export interface SurahHeaderProps {
   nameEnglish: string;
   nameTransliteration: string;
   versesCount: number;
-  revelationType: 'Meccan' | 'Medinan';
+  revelationType: "Meccan" | "Medinan";
   juzStart: number;
   juzEnd?: number;
 }
@@ -35,104 +24,96 @@ export function SurahHeader({
   nameTransliteration,
   versesCount,
   revelationType,
-  juzStart,
-  juzEnd,
 }: SurahHeaderProps) {
   const { colors } = useAppTheme();
 
-  const juzLabel = juzEnd && juzEnd !== juzStart
-    ? `Juz ${juzStart}–${juzEnd}`
-    : `Juz ${juzStart}`;
-
-  const revelationColor = revelationType === 'Meccan' ? '#8B5E3C' : colors.green;
-
   return (
-    <IslamicBorder style={styles.borderWrapper} padding={Spacing.xl}>
-      {/* Surah number label */}
-      <ThemedText role="label" style={styles.numberLabel} color={colors.textSecondary}>
-        Surah {surahNumber}
-      </ThemedText>
-
-      {/* Arabic Surah name */}
-      <ThemedText
-        role="surahName"
-        style={styles.arabicName}
-        color={colors.textArabic}
-        accessibilityLabel={nameTransliteration}
-      >
-        {nameArabic}
-      </ThemedText>
-
-      {/* Transliteration */}
-      <ThemedText role="subtitle" style={styles.transliteration} color={colors.textPrimary}>
-        {nameTransliteration}
-      </ThemedText>
-
-      {/* English name */}
-      <ThemedText role="caption" style={styles.englishName} color={colors.textSecondary}>
-        {nameEnglish}
-      </ThemedText>
-
-      {/* Meta row */}
-      <View style={styles.metaRow}>
-        <View style={[styles.revChip, { borderColor: revelationColor }]}>
-          <ThemedText role="label" color={revelationColor} style={styles.revLabel}>
-            {revelationType}
+    <View style={styles.container}>
+      <IslamicBorder padding={Spacing.lg} color={colors.gold}>
+        <View style={styles.content}>
+          <ThemedText
+            role="title"
+            color={colors.textPrimary}
+            style={styles.title}
+          >
+            {nameTransliteration}
           </ThemedText>
+          <ThemedText
+            role="subtitle"
+            color={colors.textSecondary}
+            style={styles.subtitle}
+          >
+            {nameEnglish}
+          </ThemedText>
+
+          <View style={styles.dividerRow}>
+            <View
+              style={[styles.line, { backgroundColor: colors.separator }]}
+            />
+            <ThemedText
+              role="arabicSmall"
+              color={colors.gold}
+              style={styles.arabicName}
+            >
+              {nameArabic}
+            </ThemedText>
+            <View
+              style={[styles.line, { backgroundColor: colors.separator }]}
+            />
+          </View>
+
+          <View style={styles.metaRow}>
+            <ThemedText role="caption" color={colors.textPrimary}>
+              {revelationType}
+            </ThemedText>
+            <View style={[styles.dot, { backgroundColor: colors.gold }]} />
+            <ThemedText role="caption" color={colors.textPrimary}>
+              {versesCount} Verses
+            </ThemedText>
+          </View>
         </View>
-        <ThemedText role="caption" color={colors.textSecondary} style={styles.metaDot}>·</ThemedText>
-        <ThemedText role="caption" color={colors.textSecondary}>
-          {versesCount} Āyāt
-        </ThemedText>
-        <ThemedText role="caption" color={colors.textSecondary} style={styles.metaDot}>·</ThemedText>
-        <ThemedText role="caption" color={colors.textSecondary}>
-          {juzLabel}
-        </ThemedText>
-      </View>
-    </IslamicBorder>
+      </IslamicBorder>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  borderWrapper: {
-    marginHorizontal: Spacing.lg,
-    marginTop: Spacing.md,
-    marginBottom: Spacing.sm,
-    alignItems: 'center',
+  container: {
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: Spacing.lg,
   },
-  numberLabel: {
+  content: {
+    alignItems: "center",
+  },
+  title: {
     marginBottom: Spacing.xs,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
+  },
+  subtitle: {
+    fontStyle: "italic",
+    marginBottom: Spacing.md,
+  },
+  dividerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: Spacing.md,
+  },
+  line: {
+    flex: 1,
+    height: 1,
   },
   arabicName: {
-    marginBottom: Spacing.xs,
-  },
-  transliteration: {
-    marginBottom: Spacing.xxs,
-    textAlign: 'center',
-  },
-  englishName: {
-    marginBottom: Spacing.md,
-    textAlign: 'center',
+    marginHorizontal: Spacing.md,
+    fontSize: 28, // Give it prominent size inside the border
   },
   metaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.xs,
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
-  metaDot: {
-    marginHorizontal: Spacing.xs,
-  },
-  revChip: {
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: 2,
-  },
-  revLabel: {
-    fontSize: 11,
+  dot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    marginHorizontal: Spacing.sm,
   },
 });

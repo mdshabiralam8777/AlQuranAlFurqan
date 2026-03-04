@@ -7,10 +7,16 @@
  *   const { colors, mode, setMode, isDark } = useAppTheme();
  */
 
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { useColorScheme } from 'react-native';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
+import { useColorScheme } from "react-native";
 
-import { Colors, ColorTokens, ThemeMode } from '@/constants/colors';
+import { Colors, ColorTokens, ThemeMode } from "@/constants/colors";
 
 interface ThemeContextValue {
   mode: ThemeMode;
@@ -25,7 +31,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 export function AppThemeProvider({ children }: { children: React.ReactNode }) {
   const systemScheme = useColorScheme();
   const [mode, setModeState] = useState<ThemeMode>(
-    systemScheme === 'dark' ? 'dark' : 'light',
+    systemScheme === "dark" ? "dark" : "light",
   );
 
   const setMode = useCallback((next: ThemeMode) => {
@@ -36,18 +42,21 @@ export function AppThemeProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<ThemeContextValue>(
     () => ({
       mode,
-      colors: Colors[mode],
+      colors: Colors[mode] as ColorTokens,
       setMode,
-      isDark: mode === 'dark' || mode === 'amoled',
+      isDark: mode === "dark" || mode === "amoled",
     }),
     [mode, setMode],
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 }
 
 export function useAppTheme(): ThemeContextValue {
   const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error('useAppTheme must be used inside <AppThemeProvider>');
+  if (!ctx)
+    throw new Error("useAppTheme must be used inside <AppThemeProvider>");
   return ctx;
 }
