@@ -1,4 +1,5 @@
 import { Spacing } from "@/constants/spacing";
+import { FontSize } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -100,5 +101,6 @@ const styles = StyleSheet.create({
   },
   label: {
     textAlign: "center",
+    fontSize: FontSize.xs,
   },
 });
