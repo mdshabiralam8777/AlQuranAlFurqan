@@ -275,9 +275,9 @@ export function JuzListItem({ juz }: JuzListItemProps) {
   const router = useRouter();
 
   const handlePress = () => {
-    // Navigate to first surah of this Juz
-    const surahNum = juz.startAyah.split(":")[0];
-    router.push(`/surah/${surahNum}`);
+    // Navigate to the specific surah and verse where this Juz starts
+    const [surahNum, verseNum] = juz.startAyah.split(":");
+    router.push(`/surah/${surahNum}?verse=${verseNum}&isJuz=true&mode=mushaf`);
   };
 
   return (

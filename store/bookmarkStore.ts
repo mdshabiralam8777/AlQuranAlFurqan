@@ -35,6 +35,16 @@ interface BookmarkState {
 
   /** Clear all bookmarks */
   clearAll: () => void;
+
+  /** Check if a specific Chapter or Juz is bookmarked */
+  isChapterBookmarked: (id: string, type: "chapter" | "juz") => boolean;
+
+  /** Add if not present, remove if already bookmarked for Chapter or Juz */
+  toggleChapterBookmark: (
+    id: string,
+    type: "chapter" | "juz",
+    bookmarkData: Omit<Bookmark, "verseKey" | "timestamp">,
+  ) => void;
 }
 
 export const useBookmarkStore = create<BookmarkState>()(
@@ -73,6 +83,34 @@ export const useBookmarkStore = create<BookmarkState>()(
 
       clearAll: () => {
         set({ bookmarks: [] });
+      },
+
+      isChapterBookmarked: (id: string, type: "chapter" | "juz") => {
+        const key = `${type}:${id}`;
+        return get().bookmarks.some((b) => b.verseKey === key);
+      },
+
+      toggleChapterBookmark: (
+        id: string,
+        type: "chapter" | "juz",
+        bookmarkData,
+      ) => {
+        const key = `${type}:${id}`;
+        const existing = get().bookmarks;
+        const index = existing.findIndex((b) => b.verseKey === key);
+
+        if (index !== -1) {
+          set({
+            bookmarks: existing.filter((b) => b.verseKey !== key),
+          });
+        } else {
+          set({
+            bookmarks: [
+              { ...bookmarkData, verseKey: key, timestamp: Date.now() },
+              ...existing,
+            ],
+          });
+        }
       },
     }),
     {

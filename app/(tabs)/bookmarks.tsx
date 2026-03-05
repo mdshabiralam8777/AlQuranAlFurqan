@@ -17,6 +17,7 @@ import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { JUZ_DATA } from "@/components/quran/JuzListItem";
 import { ThemedText, ThemedView } from "@/components/ui";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Spacing } from "@/constants/spacing";
@@ -61,9 +62,30 @@ export default function BookmarksScreen() {
 
   const handleNavigate = useCallback(
     (bookmark: Bookmark) => {
-      const [chapterId, verseNumber] = bookmark.verseKey.split(":");
       const mode = bookmark.source || "translation";
-      router.push(`/surah/${chapterId}?verse=${verseNumber}&mode=${mode}`);
+
+      if (bookmark.verseKey.startsWith("chapter:")) {
+        const chapterId = bookmark.verseKey.split(":")[1];
+        router.push(`/surah/${chapterId}?mode=${mode}`);
+      } else if (bookmark.verseKey.startsWith("juz:")) {
+        const juzId = bookmark.verseKey.split(":")[1];
+        // We need to fetch the start surah and verse for the Juz.
+        // For simplicity, we can route similarly to how JuzListItem does but we need the start verse info.
+        // It's probably easier to just pass the Juz ID and let the screen handle it, but our current route needs a Surah ID.
+        // Let's import JUZ_DATA to find the start chapter/verse.
+        const juzInfo = JUZ_DATA.find(
+          (j: any) => j.juzNumber.toString() === juzId,
+        );
+        if (juzInfo) {
+          const [surahNum, verseNum] = juzInfo.startAyah.split(":");
+          router.push(
+            `/surah/${surahNum}?verse=${verseNum}&isJuz=true&mode=${mode}`,
+          );
+        }
+      } else {
+        const [chapterId, verseNumber] = bookmark.verseKey.split(":");
+        router.push(`/surah/${chapterId}?verse=${verseNumber}&mode=${mode}`);
+      }
     },
     [router],
   );
@@ -122,7 +144,11 @@ export default function BookmarksScreen() {
                 color={colors.gold}
                 style={styles.verseKeyText}
               >
-                {item.verseKey}
+                {item.verseKey.startsWith("chapter:")
+                  ? "Surah"
+                  : item.verseKey.startsWith("juz:")
+                    ? "Juz"
+                    : item.verseKey}
               </ThemedText>
             </View>
             <ThemedText role="label" color={colors.textPrimary}>

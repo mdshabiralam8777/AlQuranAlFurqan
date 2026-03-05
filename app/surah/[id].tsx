@@ -39,13 +39,15 @@ function stripHtml(raw: string): string {
 }
 
 export default function SurahDetailScreen() {
-  const { id, verse, mode } = useLocalSearchParams<{
+  const { id, verse, mode, isJuz } = useLocalSearchParams<{
     id: string;
     verse?: string;
     mode?: "mushaf" | "translation";
+    isJuz?: string;
   }>();
   const chapterId = parseInt(id, 10);
   const initialVerse = verse ? parseInt(verse, 10) : undefined;
+  const isJuzMode = isJuz === "true";
 
   const { data: chapters } = useChapters();
   const {
@@ -72,7 +74,12 @@ export default function SurahDetailScreen() {
   const translationListRef = useRef<any>(null);
   const mushafListRef = useRef<any>(null);
 
-  const { isBookmarked, toggleBookmark } = useBookmarkStore();
+  const {
+    isBookmarked,
+    toggleBookmark,
+    isChapterBookmarked,
+    toggleChapterBookmark,
+  } = useBookmarkStore();
 
   const chapter = useMemo(() => {
     return chapters?.find((c) => c.id === chapterId);
@@ -88,12 +95,20 @@ export default function SurahDetailScreen() {
     return map;
   }, [translations]);
 
+  const displayVerses = useMemo(() => {
+    if (!verses) return undefined;
+    if (isJuzMode && initialVerse) {
+      return verses.filter((v) => v.verse_number >= initialVerse);
+    }
+    return verses;
+  }, [verses, isJuzMode, initialVerse]);
+
   // Group verses by their physical Mushaf page number for continuous rendering flow (Mushaf Mode)
   const pages = useMemo(() => {
-    if (!verses) return [];
+    if (!displayVerses) return [];
 
     const pagesMap = new Map<number, Verse[]>();
-    for (const verse of verses) {
+    for (const verse of displayVerses) {
       const pageNum = verse.page_number;
       if (!pagesMap.has(pageNum)) {
         pagesMap.set(pageNum, []);
@@ -107,7 +122,7 @@ export default function SurahDetailScreen() {
         verses: pageVerses,
       }))
       .sort((a, b) => a.pageNumber - b.pageNumber);
-  }, [verses]);
+  }, [displayVerses]);
 
   // Pre-compute bookmarked verse keys for O(1) lookups
   const { bookmarks } = useBookmarkStore();
@@ -161,6 +176,43 @@ export default function SurahDetailScreen() {
     },
     [chapter, toggleBookmark],
   );
+
+  const handleHeaderBookmark = useCallback(() => {
+    if (!chapter || !pages.length) return;
+    const type = isJuzMode ? "juz" : "chapter";
+    const id = isJuzMode ? isJuz : chapterId.toString(); // We'll pass juz string or chapterId string
+
+    // Grab the first verse to use as preview
+    const firstVerse = pages[0]?.verses?.[0];
+    const textUthmani =
+      firstVerse?.text_uthmani || firstVerse?.text_imlaei || "";
+    const translationText = firstVerse
+      ? translationMap.get(firstVerse.verse_key)
+      : "";
+
+    toggleChapterBookmark(id, type, {
+      textUthmani,
+      translationText,
+      surahName: type === "juz" ? `Juz ${id}` : chapter.name_simple,
+      source: viewMode,
+    });
+  }, [
+    chapter,
+    pages,
+    isJuzMode,
+    isJuz,
+    chapterId,
+    toggleChapterBookmark,
+    translationMap,
+    viewMode,
+  ]);
+
+  const isCurrentChapterBookmarked = useMemo(() => {
+    if (!chapter) return false;
+    const type = isJuzMode ? "juz" : "chapter";
+    const id = isJuzMode ? isJuz : chapterId.toString();
+    return isChapterBookmarked(id, type);
+  }, [chapter, isJuzMode, isJuz, chapterId, isChapterBookmarked]);
 
   const renderTranslationItem = ({ item }: { item: Verse }) => {
     const translationText =
@@ -321,8 +373,12 @@ export default function SurahDetailScreen() {
         >
           {chapter?.name_simple || "Surah"}
         </ThemedText>
-        <Pressable style={styles.navButton}>
-          <IconSymbol name="bookmark" size={20} color={colors.gold} />
+        <Pressable onPress={handleHeaderBookmark} style={styles.navButton}>
+          <IconSymbol
+            name={isCurrentChapterBookmarked ? "bookmark.fill" : "bookmark"}
+            size={20}
+            color={colors.gold}
+          />
         </Pressable>
       </View>
 
@@ -355,7 +411,7 @@ export default function SurahDetailScreen() {
       ) : (
         <TypedFlashList
           ref={translationListRef}
-          data={verses}
+          data={displayVerses}
           renderItem={renderTranslationItem}
           keyExtractor={(item: any) => item.id.toString()}
           ListHeaderComponent={renderHeader}
@@ -363,8 +419,8 @@ export default function SurahDetailScreen() {
           contentContainerStyle={{ paddingBottom: Spacing.xxl }}
           showsVerticalScrollIndicator={false}
           onLoad={() => {
-            if (initialVerse && verses && verses.length > 0) {
-              const targetIndex = verses.findIndex(
+            if (initialVerse && displayVerses && displayVerses.length > 0) {
+              const targetIndex = displayVerses.findIndex(
                 (v) => v.verse_number === initialVerse,
               );
               if (targetIndex > 0) {

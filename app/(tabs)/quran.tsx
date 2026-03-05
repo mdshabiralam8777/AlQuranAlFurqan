@@ -1,7 +1,7 @@
 import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 import { SurahListItem } from "@/components/quran";
 import {
@@ -14,7 +14,6 @@ import {
 import { Spacing } from "@/constants/spacing";
 import { useAppTheme } from "@/context/ThemeContext";
 import quranApi, { Chapter } from "@/services/quranApi";
-import { ActivityIndicator } from "react-native";
 
 type FilterType = "all" | "makkah" | "madinah";
 
@@ -150,7 +149,7 @@ export default function QuranIndexScreen() {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <ThemedText color={colors.textSecondary}>
-              No Surahs found matching "{searchQuery}"
+              No Surahs found matching &quot;{searchQuery}&quot;
             </ThemedText>
           </View>
         }
