@@ -1,9 +1,7 @@
 import { FlashList } from "@shopify/flash-list";
 import React, { useRef } from "react";
-import { StyleSheet, View } from "react-native";
 
 import { AyahRow, VerseData } from "@/components/quran/AyahRow";
-import { Bismillah } from "@/components/ui";
 import { Spacing } from "@/constants/spacing";
 import { Chapter, Verse } from "@/services/quranApi";
 import { useLastReadStore } from "@/store/lastReadStore";
@@ -53,30 +51,13 @@ export function TranslationList({
     );
   };
 
-  const renderBismillah = () => {
-    const showBismillah =
-      chapter && (chapter.bismillah_pre || chapter.id === 1);
-    if (!showBismillah) return null;
-
-    return (
-      <View style={styles.bismillahWrapper}>
-        <Bismillah />
-      </View>
-    );
-  };
-
   return (
     <TypedFlashList
       ref={listRef}
       data={verses}
       renderItem={renderItem}
       keyExtractor={(item: any) => item.id.toString()}
-      ListHeaderComponent={
-        <>
-          {ListHeaderComponent}
-          {renderBismillah()}
-        </>
-      }
+      ListHeaderComponent={ListHeaderComponent}
       estimatedItemSize={200}
       contentContainerStyle={{ paddingBottom: Spacing.xxl }}
       showsVerticalScrollIndicator={false}
@@ -115,11 +96,3 @@ export function TranslationList({
     />
   );
 }
-
-const styles = StyleSheet.create({
-  bismillahWrapper: {
-    alignItems: "center",
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.md,
-  },
-});

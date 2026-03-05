@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import { IslamicBorder } from "@/assets/svgs/IslamicBorder";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { Spacing } from "@/constants/spacing";
 import { useAppTheme } from "@/context/ThemeContext";
@@ -29,91 +28,101 @@ export function SurahHeader({
 
   return (
     <View style={styles.container}>
-      <IslamicBorder padding={Spacing.lg} color={colors.gold}>
-        <View style={styles.content}>
-          <ThemedText
-            role="title"
-            color={colors.textPrimary}
-            style={styles.title}
-          >
-            {nameTransliteration}
-          </ThemedText>
-          <ThemedText
-            role="subtitle"
-            color={colors.textSecondary}
-            style={styles.subtitle}
-          >
-            {nameEnglish}
-          </ThemedText>
-
-          <View style={styles.dividerRow}>
-            <View
-              style={[styles.line, { backgroundColor: colors.separator }]}
-            />
+      {/* 
+        A highly compact, single-line arrangement. 
+        We use a subtle background with an underline to anchor it visually, 
+        saving vertical space compared to the large decorative border. 
+      */}
+      <View
+        style={[
+          styles.compactCard,
+          {
+            backgroundColor: colors.bgSecondary,
+            borderColor: colors.border,
+          },
+        ]}
+      >
+        <View style={styles.leftSection}>
+          <View style={[styles.numberBadge, { backgroundColor: colors.gold }]}>
             <ThemedText
-              role="arabicSmall"
-              color={colors.gold}
-              style={styles.arabicName}
+              style={[styles.numberText, { color: colors.navyPrimary }]}
             >
-              {nameArabic}
+              {surahNumber}
             </ThemedText>
-            <View
-              style={[styles.line, { backgroundColor: colors.separator }]}
-            />
           </View>
-
-          <View style={styles.metaRow}>
-            <ThemedText role="caption" color={colors.textPrimary}>
-              {revelationType}
+          <View>
+            <ThemedText role="label" color={colors.textPrimary}>
+              {nameTransliteration}
             </ThemedText>
-            <View style={[styles.dot, { backgroundColor: colors.gold }]} />
-            <ThemedText role="caption" color={colors.textPrimary}>
-              {versesCount} Verses
+            <ThemedText role="caption" color={colors.textSecondary}>
+              {nameEnglish}
             </ThemedText>
           </View>
         </View>
-      </IslamicBorder>
+
+        <View style={styles.centerSection}>
+          <ThemedText role="caption" color={colors.textSecondary}>
+            {revelationType} • {versesCount} Verses
+          </ThemedText>
+        </View>
+
+        <View style={styles.rightSection}>
+          <ThemedText
+            role="arabicSmall"
+            color={colors.gold}
+            style={styles.arabicName}
+          >
+            {nameArabic}
+          </ThemedText>
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.lg,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm, // Reduced vertical padding
   },
-  content: {
-    alignItems: "center",
-  },
-  title: {
-    marginBottom: Spacing.xs,
-  },
-  subtitle: {
-    fontStyle: "italic",
-    marginBottom: Spacing.md,
-  },
-  dividerRow: {
+  compactCard: {
     flexDirection: "row",
     alignItems: "center",
-    width: "100%",
-    marginBottom: Spacing.md,
+    justifyContent: "space-between",
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    borderRadius: 8,
+    borderWidth: 1,
   },
-  line: {
+  leftSection: {
+    flexDirection: "row",
+    alignItems: "center",
     flex: 1,
-    height: 1,
+  },
+  numberBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: Spacing.sm,
+  },
+  numberText: {
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  centerSection: {
+    flex: 1.5,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: Spacing.xs,
+  },
+  rightSection: {
+    flex: 1,
+    alignItems: "flex-end",
   },
   arabicName: {
-    marginHorizontal: Spacing.md,
-    fontSize: 28, // Give it prominent size inside the border
-  },
-  metaRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  dot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    marginHorizontal: Spacing.sm,
+    fontSize: 20, // Slightly smaller to fit compact layout
+    textAlign: "right",
   },
 });

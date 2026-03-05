@@ -9,7 +9,7 @@ import { VerseData } from "@/components/quran/AyahRow";
 import { MushafList } from "@/components/quran/MushafList";
 import { TranslationList } from "@/components/quran/TranslationList";
 import { ViewModeToggle } from "@/components/quran/ViewModeToggle";
-import { ThemedText, ThemedView } from "@/components/ui";
+import { Bismillah, ThemedText, ThemedView } from "@/components/ui";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
@@ -207,6 +207,13 @@ export default function SurahDetailScreen() {
           viewMode={viewMode as "mushaf" | "translation"}
           setViewMode={setViewMode}
         />
+
+        {/* Show Bismillah if in Juz mode OR if the chapter requires it (avoid for Surah At-Tawbah) */}
+        {(isJuzMode || chapter.bismillah_pre || chapter.id === 1) && (
+          <View style={styles.bismillahWrapper}>
+            <Bismillah />
+          </View>
+        )}
       </View>
     );
   };
@@ -318,19 +325,19 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
   },
   headerSpacer: {
-    paddingTop: Spacing.md,
+    paddingTop: Spacing.xs,
   },
   navBar: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    minHeight: 56,
+    paddingVertical: Spacing.xs,
+    minHeight: 48,
   },
   navButton: {
     padding: Spacing.xs,
-    width: 40,
+    width: 36,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -338,11 +345,11 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: "center",
     fontWeight: "600",
-    fontSize: 18,
+    fontSize: 17,
   },
   bismillahWrapper: {
     alignItems: "center",
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.md,
+    marginTop: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
 });
