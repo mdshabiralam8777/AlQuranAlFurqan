@@ -13,7 +13,7 @@ import { StatusBar } from "expo-status-bar";
 import * as Updates from "expo-updates";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { I18nManager } from "react-native";
+import { DevSettings, I18nManager } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 
@@ -53,7 +53,11 @@ function RootStack() {
       I18nManager.forceRTL(isRtl);
 
       // Reload app to apply layout changes
-      Updates.reloadAsync();
+      if (__DEV__) {
+        DevSettings.reload();
+      } else {
+        Updates.reloadAsync().catch(() => {});
+      }
     }
   }, [appLanguage, i18n]);
 
