@@ -1,6 +1,5 @@
 import { FlashList } from "@shopify/flash-list";
-import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 import { SurahListItem } from "@/components/quran";
@@ -13,58 +12,29 @@ import {
 } from "@/components/ui";
 import { Spacing } from "@/constants/spacing";
 import { useAppTheme } from "@/context/ThemeContext";
-import quranApi, { Chapter } from "@/services/quranApi";
-
-type FilterType = "all" | "makkah" | "madinah";
+import { useChaptersSearch } from "@/hooks/useChaptersSearch";
+import { Chapter } from "@/services/quranApi";
 
 export default function QuranIndexScreen() {
   const { colors } = useAppTheme();
 
-  // Local state for search and filter
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
-  const listRef = useRef<FlashList<Chapter>>(null);
+  const {
+    filteredChapters,
+    searchQuery,
+    setSearchQuery,
+    activeFilter,
+    setActiveFilter,
+    isLoading,
+    isError,
+    error,
+  } = useChaptersSearch();
+
+  const listRef = useRef<any>(null);
 
   // Scroll to top when filter or search changes
   useEffect(() => {
     listRef.current?.scrollToOffset({ offset: 0, animated: true });
   }, [activeFilter, searchQuery]);
-
-  // Fetch chapters
-  const {
-    data: chapters = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["chapters"],
-    queryFn: () => quranApi.getChapters(),
-  });
-
-  // Derived state: filter and search
-  const filteredChapters = useMemo(() => {
-    let result = chapters;
-
-    // 1. Filter by revelation place
-    if (activeFilter === "makkah") {
-      result = result.filter((c: Chapter) => c.revelation_place === "makkah");
-    } else if (activeFilter === "madinah") {
-      result = result.filter((c: Chapter) => c.revelation_place === "madinah");
-    }
-
-    // 2. Filter by search query
-    if (searchQuery.trim() !== "") {
-      const lowerQuery = searchQuery.toLowerCase();
-      result = result.filter(
-        (c: Chapter) =>
-          c.name_simple.toLowerCase().includes(lowerQuery) ||
-          c.translated_name?.name.toLowerCase().includes(lowerQuery) ||
-          c.name_arabic.includes(lowerQuery),
-      );
-    }
-
-    return result;
-  }, [chapters, activeFilter, searchQuery]);
 
   if (isLoading) {
     return (

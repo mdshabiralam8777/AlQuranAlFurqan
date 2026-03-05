@@ -15,7 +15,7 @@ export function NavyHeader() {
         styles.container,
         {
           backgroundColor: colors.navyPrimary,
-          marginTop: insets.top + Spacing.sm,
+          marginTop: insets.top + Spacing.md,
         },
       ]}
     >
@@ -23,7 +23,7 @@ export function NavyHeader() {
         <Image
           source={require("@/assets/images/FinalLogo.webp")}
           style={styles.logo}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </View>
     </View>
@@ -41,11 +41,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: Spacing.xl, // Increased width
-    paddingVertical: Spacing.xs, // Reduced height
+    paddingHorizontal: Spacing.xl,
+    paddingVertical: 0, // Removed padding to keep header slim
   },
   logo: {
-    width: 220, // Much wider bounds
-    height: 70, // Much shorter bounds
+    width: 220,
+    height: 70, // Increased height so contain doesn't shrink it too much horizontally
+    marginTop: -10, // Shaved off top internal padding
+    marginBottom: 10, // Shaved off bottom internal padding
   },
 });

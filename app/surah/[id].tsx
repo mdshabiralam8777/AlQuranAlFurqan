@@ -1,13 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
-import { FlashList } from "@shopify/flash-list";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { MushafPage, SurahHeader } from "@/components/quran";
-import { AyahRow, VerseData } from "@/components/quran/AyahRow";
-import { Bismillah, ThemedText, ThemedView } from "@/components/ui";
+import { SurahHeader } from "@/components/quran";
+import { VerseData } from "@/components/quran/AyahRow";
+import { MushafList } from "@/components/quran/MushafList";
+import { TranslationList } from "@/components/quran/TranslationList";
+import { ViewModeToggle } from "@/components/quran/ViewModeToggle";
+import { ThemedText, ThemedView } from "@/components/ui";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
@@ -20,23 +22,9 @@ import {
   Verse,
 } from "@/services/quranApi";
 import { useBookmarkStore } from "@/store/bookmarkStore";
-
-const TypedFlashList = FlashList as any;
+import { stripHtml } from "@/utils/text";
 
 type ViewMode = "mushaf" | "translation";
-
-/** Strip HTML tags and footnote superscripts the QF API wraps translations in */
-function stripHtml(raw: string): string {
-  return raw
-    .replace(/<sup[^>]*>.*?<\/sup>/gi, "") // remove footnote markers
-    .replace(/<[^>]+>/g, "") // remove all remaining HTML tags
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .trim();
-}
 
 export default function SurahDetailScreen() {
   const { id, verse, mode, isJuz } = useLocalSearchParams<{
@@ -70,9 +58,6 @@ export default function SurahDetailScreen() {
   const [viewMode, setViewMode] = useState<ViewMode>(
     mode || (initialVerse ? "translation" : "mushaf"),
   );
-
-  const translationListRef = useRef<any>(null);
-  const mushafListRef = useRef<any>(null);
 
   const {
     isBookmarked,
@@ -129,26 +114,6 @@ export default function SurahDetailScreen() {
   const bookmarkedVerseKeys = useMemo(() => {
     return new Set(bookmarks.map((b) => b.verseKey));
   }, [bookmarks]);
-
-  const renderMushafItem = ({
-    item,
-  }: {
-    item: { pageNumber: number; verses: Verse[] };
-  }) => {
-    const showBismillah =
-      (chapter?.bismillah_pre || chapter?.id === 1) &&
-      item.verses.some((v) => v.verse_number === 1);
-
-    return (
-      <MushafPage
-        pageNumber={item.pageNumber}
-        verses={item.verses}
-        showBismillah={!!showBismillah}
-        onVersePress={handleMushafBookmark}
-        bookmarkedVerseKeys={bookmarkedVerseKeys}
-      />
-    );
-  };
 
   const handleMushafBookmark = useCallback(
     (verse: Verse) => {
@@ -214,39 +179,6 @@ export default function SurahDetailScreen() {
     return isChapterBookmarked(id, type);
   }, [chapter, isJuzMode, isJuz, chapterId, isChapterBookmarked]);
 
-  const renderTranslationItem = ({ item }: { item: Verse }) => {
-    const translationText =
-      translationMap.get(item.verse_key) ?? "Loading translation…";
-
-    return (
-      <AyahRow
-        verse={{
-          id: item.id,
-          verseKey: item.verse_key,
-          textUthmani: item.text_uthmani || item.text_imlaei || "",
-          translationText,
-          isSajdah: !!item.sajdah_number,
-        }}
-        isBookmarked={isBookmarked(item.verse_key)}
-        onBookmark={handleBookmark}
-        showTranslation={true}
-        viewMode="translation"
-      />
-    );
-  };
-
-  const renderTranslationBismillah = () => {
-    const showBismillah =
-      chapter && (chapter.bismillah_pre || chapter.id === 1);
-    if (!showBismillah) return null;
-
-    return (
-      <View style={styles.bismillahWrapper}>
-        <Bismillah />
-      </View>
-    );
-  };
-
   const renderHeader = () => {
     if (!chapter) return null;
     return (
@@ -264,53 +196,10 @@ export default function SurahDetailScreen() {
         />
 
         {/* View Mode Toggle */}
-        <View style={styles.toggleContainer}>
-          <Pressable
-            onPress={() => setViewMode("mushaf")}
-            style={[
-              styles.toggleButton,
-              viewMode === "mushaf" && [
-                styles.toggleButtonActive,
-                { backgroundColor: colors.gold },
-              ],
-            ]}
-          >
-            <ThemedText
-              role="label"
-              color={
-                viewMode === "mushaf"
-                  ? colors.navyPrimary
-                  : colors.textSecondary
-              }
-            >
-              Mushaf
-            </ThemedText>
-          </Pressable>
-          <Pressable
-            onPress={() => setViewMode("translation")}
-            style={[
-              styles.toggleButton,
-              viewMode === "translation" && [
-                styles.toggleButtonActive,
-                { backgroundColor: colors.gold },
-              ],
-            ]}
-          >
-            <ThemedText
-              role="label"
-              color={
-                viewMode === "translation"
-                  ? colors.navyPrimary
-                  : colors.textSecondary
-              }
-            >
-              Translation
-            </ThemedText>
-          </Pressable>
-        </View>
-
-        {/* Bismillah in translation mode */}
-        {viewMode === "translation" && renderTranslationBismillah()}
+        <ViewModeToggle
+          viewMode={viewMode as "mushaf" | "translation"}
+          setViewMode={setViewMode}
+        />
       </View>
     );
   };
@@ -383,56 +272,23 @@ export default function SurahDetailScreen() {
       </View>
 
       {viewMode === "mushaf" ? (
-        <TypedFlashList
-          ref={mushafListRef}
-          data={pages}
-          renderItem={renderMushafItem}
-          keyExtractor={(item: any) => item.pageNumber.toString()}
-          ListHeaderComponent={renderHeader}
-          estimatedItemSize={600}
-          contentContainerStyle={{ paddingBottom: Spacing.xxl }}
-          showsVerticalScrollIndicator={false}
-          onLoad={() => {
-            if (initialVerse && pages && pages.length > 0) {
-              const targetPageIndex = pages.findIndex((p) =>
-                p.verses.some((v) => v.verse_number === initialVerse),
-              );
-              if (targetPageIndex > 0) {
-                setTimeout(() => {
-                  mushafListRef.current?.scrollToIndex({
-                    index: targetPageIndex,
-                    animated: true,
-                  });
-                }, 300);
-              }
-            }
-          }}
+        <MushafList
+          pages={pages}
+          chapter={chapter}
+          onBookmark={handleMushafBookmark}
+          bookmarkedVerseKeys={bookmarkedVerseKeys}
+          ListHeaderComponent={renderHeader()}
+          initialVerse={initialVerse}
         />
       ) : (
-        <TypedFlashList
-          ref={translationListRef}
-          data={displayVerses}
-          renderItem={renderTranslationItem}
-          keyExtractor={(item: any) => item.id.toString()}
-          ListHeaderComponent={renderHeader}
-          estimatedItemSize={200}
-          contentContainerStyle={{ paddingBottom: Spacing.xxl }}
-          showsVerticalScrollIndicator={false}
-          onLoad={() => {
-            if (initialVerse && displayVerses && displayVerses.length > 0) {
-              const targetIndex = displayVerses.findIndex(
-                (v) => v.verse_number === initialVerse,
-              );
-              if (targetIndex > 0) {
-                setTimeout(() => {
-                  translationListRef.current?.scrollToIndex({
-                    index: targetIndex,
-                    animated: true,
-                  });
-                }, 300);
-              }
-            }
-          }}
+        <TranslationList
+          verses={displayVerses || []}
+          chapter={chapter}
+          translationMap={translationMap}
+          isBookmarked={isBookmarked}
+          onBookmark={handleBookmark}
+          ListHeaderComponent={renderHeader()}
+          initialVerse={initialVerse}
         />
       )}
     </ThemedView>
@@ -456,28 +312,6 @@ const styles = StyleSheet.create({
   },
   headerSpacer: {
     paddingTop: Spacing.md,
-  },
-  toggleContainer: {
-    flexDirection: "row",
-    marginHorizontal: Spacing.lg,
-    marginTop: Spacing.lg,
-    marginBottom: Spacing.md,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    borderRadius: BorderRadius.lg,
-    padding: 4,
-  },
-  toggleButton: {
-    flex: 1,
-    paddingVertical: Spacing.sm,
-    alignItems: "center",
-    borderRadius: BorderRadius.md,
-  },
-  toggleButtonActive: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
   },
   navBar: {
     flexDirection: "row",

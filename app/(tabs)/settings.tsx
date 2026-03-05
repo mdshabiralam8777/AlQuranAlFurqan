@@ -1,11 +1,14 @@
+import React from "react";
+import { Pressable, ScrollView, StyleSheet, Switch, View } from "react-native";
+
+import { SettingsRow } from "@/components/settings/SettingsRow";
+import { SettingsSection } from "@/components/settings/SettingsSection";
 import { NavyHeader, ThemedText, ThemedView } from "@/components/ui";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useSettingsStore } from "@/store/settingsStore";
-import React from "react";
-import { Pressable, ScrollView, StyleSheet, Switch, View } from "react-native";
 
 export default function SettingsScreen() {
   const { colors } = useAppTheme();
@@ -30,35 +33,9 @@ export default function SettingsScreen() {
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* SECTION: Display & Typography */}
-        <ThemedText
-          role="label"
-          color={colors.gold}
-          style={styles.sectionTitle}
-        >
-          Display & Typography
-        </ThemedText>
-        <ThemedView
-          layer="secondary"
-          style={[styles.sectionCard, { borderColor: colors.separator }]}
-        >
+        <SettingsSection title="Display & Typography">
           {/* Theme */}
-          <View
-            style={[
-              styles.row,
-              {
-                borderBottomColor: colors.separator,
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              },
-            ]}
-          >
-            <View style={styles.rowLeft}>
-              <IconSymbol
-                name="moon.circle.fill"
-                size={24}
-                color={colors.textSecondary}
-              />
-              <ThemedText style={styles.rowLabel}>Theme</ThemedText>
-            </View>
+          <SettingsRow icon="moon.circle.fill" label="Theme">
             <View style={styles.segmentedControl}>
               {(["light", "dark", "amoled"] as const).map((t) => (
                 <Pressable
@@ -80,26 +57,10 @@ export default function SettingsScreen() {
                 </Pressable>
               ))}
             </View>
-          </View>
+          </SettingsRow>
 
           {/* Script Style */}
-          <View
-            style={[
-              styles.row,
-              {
-                borderBottomColor: colors.separator,
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              },
-            ]}
-          >
-            <View style={styles.rowLeft}>
-              <IconSymbol
-                name="character.book.closed.fill"
-                size={24}
-                color={colors.textSecondary}
-              />
-              <ThemedText style={styles.rowLabel}>Script Style</ThemedText>
-            </View>
+          <SettingsRow icon="character.book.closed.fill" label="Script Style">
             <View style={styles.segmentedControl}>
               <Pressable
                 style={[
@@ -138,18 +99,10 @@ export default function SettingsScreen() {
                 </ThemedText>
               </Pressable>
             </View>
-          </View>
+          </SettingsRow>
 
           {/* Font Size Stepper */}
-          <View style={styles.row}>
-            <View style={styles.rowLeft}>
-              <IconSymbol
-                name="textformat.size"
-                size={24}
-                color={colors.textSecondary}
-              />
-              <ThemedText style={styles.rowLabel}>Arabic Font Size</ThemedText>
-            </View>
+          <SettingsRow icon="textformat.size" label="Arabic Font Size" isLast>
             <View style={styles.stepperControl}>
               <Pressable
                 style={[
@@ -177,40 +130,12 @@ export default function SettingsScreen() {
                 <IconSymbol name="plus" size={16} color={colors.textPrimary} />
               </Pressable>
             </View>
-          </View>
-        </ThemedView>
+          </SettingsRow>
+        </SettingsSection>
 
         {/* SECTION: Audio & Playback */}
-        <ThemedText
-          role="label"
-          color={colors.gold}
-          style={styles.sectionTitle}
-        >
-          Audio & Playback
-        </ThemedText>
-        <ThemedView
-          layer="secondary"
-          style={[styles.sectionCard, { borderColor: colors.separator }]}
-        >
-          <View
-            style={[
-              styles.row,
-              {
-                borderBottomColor: colors.separator,
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              },
-            ]}
-          >
-            <View style={styles.rowLeft}>
-              <IconSymbol
-                name="play.circle.fill"
-                size={24}
-                color={colors.textSecondary}
-              />
-              <ThemedText style={styles.rowLabel}>
-                Auto-play Next Ayah
-              </ThemedText>
-            </View>
+        <SettingsSection title="Audio & Playback">
+          <SettingsRow icon="play.circle.fill" label="Auto-play Next Ayah">
             <Switch
               value={autoPlayNextVerse}
               onValueChange={setAutoPlayNextVerse}
@@ -219,19 +144,13 @@ export default function SettingsScreen() {
                 autoPlayNextVerse ? colors.bgPrimary : colors.textSecondary
               }
             />
-          </View>
+          </SettingsRow>
 
-          <View style={styles.row}>
-            <View style={styles.rowLeft}>
-              <IconSymbol
-                name="slider.horizontal.3"
-                size={24}
-                color={colors.textSecondary}
-              />
-              <ThemedText style={styles.rowLabel}>
-                Show Inline Controls
-              </ThemedText>
-            </View>
+          <SettingsRow
+            icon="slider.horizontal.3"
+            label="Show Inline Controls"
+            isLast
+          >
             <Switch
               value={showRecitationControls}
               onValueChange={setShowRecitationControls}
@@ -240,8 +159,8 @@ export default function SettingsScreen() {
                 showRecitationControls ? colors.bgPrimary : colors.textSecondary
               }
             />
-          </View>
-        </ThemedView>
+          </SettingsRow>
+        </SettingsSection>
       </ScrollView>
     </ThemedView>
   );
@@ -253,34 +172,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: Spacing.lg,
-  },
-  sectionTitle: {
-    marginLeft: Spacing.sm,
-    marginBottom: Spacing.sm,
-    textTransform: "uppercase",
-    letterSpacing: 1,
-  },
-  sectionCard: {
-    borderRadius: BorderRadius.lg,
-    borderWidth: 1,
-    marginBottom: Spacing.xl,
-    overflow: "hidden",
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: Spacing.lg,
-  },
-  rowLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  rowLabel: {
-    marginLeft: Spacing.md,
-    fontSize: 16,
-    fontWeight: "500",
   },
   segmentedControl: {
     flexDirection: "row",
