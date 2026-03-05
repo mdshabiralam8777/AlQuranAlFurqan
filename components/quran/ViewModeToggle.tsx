@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/ui";
@@ -15,6 +16,7 @@ interface ViewModeToggleProps {
 
 export function ViewModeToggle({ viewMode, setViewMode }: ViewModeToggleProps) {
   const { colors } = useAppTheme();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.toggleContainer}>
@@ -34,7 +36,7 @@ export function ViewModeToggle({ viewMode, setViewMode }: ViewModeToggleProps) {
             viewMode === "mushaf" ? colors.navyPrimary : colors.textSecondary
           }
         >
-          Mushaf
+          {t("actions.mushafMode")}
         </ThemedText>
       </Pressable>
       <Pressable
@@ -55,7 +57,7 @@ export function ViewModeToggle({ viewMode, setViewMode }: ViewModeToggleProps) {
               : colors.textSecondary
           }
         >
-          Translation
+          {t("actions.translationMode")}
         </ThemedText>
       </Pressable>
     </View>

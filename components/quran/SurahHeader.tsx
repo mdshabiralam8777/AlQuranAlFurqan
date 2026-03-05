@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/ui/ThemedText";
@@ -11,7 +12,7 @@ export interface SurahHeaderProps {
   nameEnglish: string;
   nameTransliteration: string;
   versesCount: number;
-  revelationType: "Meccan" | "Medinan";
+  revelationType: string;
   juzStart: number;
   juzEnd?: number;
 }
@@ -25,6 +26,7 @@ export function SurahHeader({
   revelationType,
 }: SurahHeaderProps) {
   const { colors } = useAppTheme();
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -62,7 +64,7 @@ export function SurahHeader({
 
         <View style={styles.centerSection}>
           <ThemedText color={colors.textSecondary} style={styles.metaText}>
-            {revelationType} • {versesCount} Verses
+            {revelationType} • {t("surah.versesCount", { count: versesCount })}
           </ThemedText>
         </View>
 

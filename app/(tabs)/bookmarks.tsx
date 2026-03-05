@@ -12,6 +12,7 @@
 import { FlashList } from "@shopify/flash-list";
 import { useRouter } from "expo-router";
 import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -26,24 +27,21 @@ import { Bookmark, useBookmarkStore } from "@/store/bookmarkStore";
 
 export default function BookmarksScreen() {
   const { colors } = useAppTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { bookmarks, removeBookmark, clearAll } = useBookmarkStore();
 
   const handleClearAll = useCallback(() => {
-    Alert.alert(
-      "Clear All Bookmarks",
-      "Are you sure you want to remove all bookmarks? This action cannot be undone.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Clear All",
-          style: "destructive",
-          onPress: () => clearAll(),
-        },
-      ],
-    );
-  }, [clearAll]);
+    Alert.alert(t("actions.clearAllBookmarks"), t("actions.clearAllConfirm"), [
+      { text: t("actions.cancel"), style: "cancel" },
+      {
+        text: t("actions.clearAll"),
+        style: "destructive",
+        onPress: () => clearAll(),
+      },
+    ]);
+  }, [clearAll, t]);
 
   const handleNavigate = useCallback(
     (bookmark: Bookmark) => {
@@ -94,7 +92,7 @@ export default function BookmarksScreen() {
       >
         <View style={styles.headerRow}>
           <ThemedText role="heading" color={colors.textPrimary}>
-            Bookmarks
+            {t("tabs.bookmarks")}
           </ThemedText>
           {bookmarks.length > 0 && (
             <View
@@ -112,7 +110,7 @@ export default function BookmarksScreen() {
           {bookmarks.length > 0 && (
             <Pressable onPress={handleClearAll} style={styles.clearButton}>
               <ThemedText role="caption" color={colors.gold}>
-                Clear All
+                {t("actions.clearAll")}
               </ThemedText>
             </Pressable>
           )}

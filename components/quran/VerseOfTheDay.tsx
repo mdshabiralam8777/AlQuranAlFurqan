@@ -2,11 +2,13 @@ import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { ThemedText, ThemedView } from "../ui";
 
 export function VerseOfTheDay() {
   const { colors } = useAppTheme();
+  const { t } = useTranslation();
 
   // STUB: This will be connected to React Query + Quran.com /random/ayat API
   const mockVerse = {
@@ -23,7 +25,7 @@ export function VerseOfTheDay() {
       >
         <View style={styles.header}>
           <ThemedText role="label" color={colors.gold}>
-            Verse of the Day
+            {t("home.verseOfTheDay")}
           </ThemedText>
         </View>
 

@@ -27,6 +27,10 @@ interface SettingsState {
   translationName: string;
   setTranslation: (id: number, name: string) => void;
 
+  // App Language
+  appLanguage: "en" | "ar" | "ur";
+  setAppLanguage: (lang: "en" | "ar" | "ur") => void;
+
   // UI Toggles
   showRecitationControls: boolean;
   setShowRecitationControls: (val: boolean) => void;
@@ -55,6 +59,9 @@ export const useSettingsStore = create<SettingsState>()(
       setTranslation: (id, name) =>
         set({ translationId: id, translationName: name }),
 
+      appLanguage: "en",
+      setAppLanguage: (lang) => set({ appLanguage: lang }),
+
       showRecitationControls: true,
       setShowRecitationControls: (val) => set({ showRecitationControls: val }),
     }),
@@ -70,6 +77,7 @@ export const useSettingsStore = create<SettingsState>()(
         autoPlayNextVerse: state.autoPlayNextVerse,
         translationId: state.translationId,
         translationName: state.translationName,
+        appLanguage: state.appLanguage,
         showRecitationControls: state.showRecitationControls,
       }),
     },

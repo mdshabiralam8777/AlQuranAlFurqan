@@ -1,6 +1,7 @@
 import { FlashList } from "@shopify/flash-list";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import { JUZ_DATA, JuzInfo, JuzListItem } from "@/components/quran/JuzListItem";
@@ -12,6 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function JuzListScreen() {
   const { colors } = useAppTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -34,7 +36,7 @@ export default function JuzListScreen() {
           style={[styles.navTitle, { color: colors.textPrimary }]}
           numberOfLines={1}
         >
-          Juz Index
+          {t("home.juzIndex")}
         </ThemedText>
         <View style={styles.navButton} />
       </View>

@@ -1,0 +1,73 @@
+{
+  "tabs": {
+    "home": "الرئيسية",
+    "surahs": "السور",
+    "bookmarks": "المحفوظات",
+    "settings": "الإعدادات"
+  },
+  "home": {
+    "greeting": "السلام عليكم",
+    "lastRead": "آخر قراءة",
+    "continueReading": "مواصلة القراءة",
+    "quickAccess": "وصول سريع",
+    "juz": "الأجزاء",
+    "bookmarks": "المحفوظات",
+    "qibla": "القبلة",
+    "duas": "أدعية",
+    "verseOfTheDay": "آية اليوم",
+    "readTafsir": "قراءة التفسير",
+    "ayah": "آية",
+    "searchPlaceholder": "ابحث عن اسم السورة...",
+    "all": "الكل",
+    "errorLoad": "فشل تحميل السور.",
+    "juzIndex": "فهرس الأجزاء"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "displayTypography": "العرض والخطوط",
+    "theme": "المظهر",
+    "scriptStyle": "نوع الخط",
+    "arabicFontSize": "حجم الخط العربي",
+    "translationFontSize": "حجم خط الترجمة",
+    "readingPreferences": "تفضيلات القراءة",
+    "reciter": "القارئ",
+    "translation": "الترجمة",
+    "language": "لغة التطبيق",
+    "audioPlayback": "الصوت والتشغيل",
+    "autoPlayNextVerse": "تشغيل الآية التالية تلقائياً",
+    "showInlineControls": "إظهار أزرار التحكم في النص",
+    "themes": {
+      "light": "فاتح",
+      "dark": "داكن",
+      "amoled": "شديد السواد"
+    },
+    "scripts": {
+      "uthmani": "عثماني",
+      "imlaei": "إملائي"
+    }
+  },
+  "actions": {
+    "play": "تشغيل",
+    "share": "مشاركة",
+    "note": "ملاحظة",
+    "tafsir": "تفسير",
+    "save": "حفظ",
+    "saved": "محفوظ",
+    "retry": "إعادة المحاولة",
+    "loading": "جاري تحميل الترجمة…",
+    "noResults": "لم يتم العثور على سور تطابق \"{{query}}\"",
+    "mushafMode": "مصحف",
+    "translationMode": "ترجمة",
+    "clearAll": "مسح الكل",
+    "clearAllBookmarks": "مسح كل العلامات المرجعية",
+    "clearAllConfirm": "هل أنت متأكد أنك تريد إزالة جميع العلامات المرجعية؟ لا يمكن التراجع عن هذا الإجراء.",
+    "cancel": "إلغاء"
+  },
+  "surah": {
+    "versesCount": "{{count}} آيات",
+    "revelationType": {
+      "meccan": "مكية",
+      "medinan": "مدنية"
+    }
+  }
+}

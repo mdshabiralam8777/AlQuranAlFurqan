@@ -4,12 +4,14 @@ import { useAppTheme } from "@/context/ThemeContext";
 import { useLastReadStore } from "@/store/lastReadStore";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedText, ThemedView } from "../ui";
 import { IconSymbol } from "../ui/icon-symbol";
 
 export function LastReadCard() {
   const { colors } = useAppTheme();
+  const { t } = useTranslation();
   const router = useRouter();
 
   const { lastRead } = useLastReadStore();
@@ -34,7 +36,7 @@ export function LastReadCard() {
             <IconSymbol name="book.pages.fill" size={20} color={colors.gold} />
           </View>
           <ThemedText role="label" color={colors.textSecondary}>
-            Last Read
+            {t("home.lastRead")}
           </ThemedText>
         </View>
 
@@ -48,7 +50,7 @@ export function LastReadCard() {
               color={colors.textSecondary}
               style={{ marginTop: Spacing.xs }}
             >
-              Ayah {lastRead.ayahNumber}
+              {t("home.ayah")} {lastRead.ayahNumber}
             </ThemedText>
           </View>
           <ThemedText
@@ -62,7 +64,7 @@ export function LastReadCard() {
 
         <View style={[styles.bottomRow, { borderTopColor: colors.separator }]}>
           <ThemedText role="label" color={colors.gold}>
-            Continue Reading
+            {t("home.continueReading")}
           </ThemedText>
           <IconSymbol name="chevron.right" size={16} color={colors.gold} />
         </View>

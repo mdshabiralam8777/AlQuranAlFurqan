@@ -1,0 +1,73 @@
+{
+  "tabs": {
+    "home": "Home",
+    "surahs": "Surahs",
+    "bookmarks": "Bookmarks",
+    "settings": "Settings"
+  },
+  "home": {
+    "greeting": "Assalamu Alaikum",
+    "lastRead": "Last Read",
+    "continueReading": "Continue Reading",
+    "quickAccess": "Quick Access",
+    "juz": "Juz",
+    "bookmarks": "Bookmarks",
+    "qibla": "Qibla",
+    "duas": "Duas",
+    "verseOfTheDay": "Verse of the Day",
+    "readTafsir": "Read Tafsir",
+    "ayah": "Ayah",
+    "searchPlaceholder": "Search Surah Name...",
+    "all": "All",
+    "errorLoad": "Failed to load Surahs.",
+    "juzIndex": "Juz Index"
+  },
+  "settings": {
+    "title": "Settings",
+    "displayTypography": "Display & Typography",
+    "theme": "Theme",
+    "scriptStyle": "Script Style",
+    "arabicFontSize": "Arabic Font Size",
+    "translationFontSize": "Translation Font Size",
+    "readingPreferences": "Reading Preferences",
+    "reciter": "Reciter",
+    "translation": "Translation",
+    "language": "App Language",
+    "audioPlayback": "Audio & Playback",
+    "autoPlayNextVerse": "Auto-play Next Ayah",
+    "showInlineControls": "Show Inline Controls",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "amoled": "Amoled"
+    },
+    "scripts": {
+      "uthmani": "Uthmani",
+      "imlaei": "Imlaei"
+    }
+  },
+  "actions": {
+    "play": "Play",
+    "share": "Share",
+    "note": "Note",
+    "tafsir": "Tafsir",
+    "save": "Save",
+    "saved": "Saved",
+    "retry": "Retry",
+    "loading": "Loading translation…",
+    "noResults": "No Surahs found matching \"{{query}}\"",
+    "mushafMode": "Mushaf",
+    "translationMode": "Translation",
+    "clearAll": "Clear All",
+    "clearAllBookmarks": "Clear All Bookmarks",
+    "clearAllConfirm": "Are you sure you want to remove all bookmarks? This action cannot be undone.",
+    "cancel": "Cancel"
+  },
+  "surah": {
+    "versesCount": "{{count}} Ayahs",
+    "revelationType": {
+      "meccan": "Meccan",
+      "medinan": "Medinan"
+    }
+  }
+}

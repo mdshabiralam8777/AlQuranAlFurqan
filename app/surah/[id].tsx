@@ -197,7 +197,9 @@ export default function SurahDetailScreen() {
           nameTransliteration={chapter.name_simple}
           versesCount={chapter.verses_count}
           revelationType={
-            chapter.revelation_place === "makkah" ? "Meccan" : "Medinan"
+            chapter.revelation_place === "makkah"
+              ? t("surah.revelationType.meccan")
+              : t("surah.revelationType.medinan")
           }
           juzStart={1}
         />
@@ -241,14 +243,14 @@ export default function SurahDetailScreen() {
         <ThemedText
           style={{ color: colors.textSecondary, marginBottom: Spacing.md }}
         >
-          Failed to load verses.
+          {t("home.errorLoad")}
         </ThemedText>
         <Pressable
           onPress={() => refetchVerses()}
           style={[styles.retryButton, { backgroundColor: colors.gold }]}
         >
           <ThemedText role="label" color={colors.navyPrimary}>
-            Retry
+            {t("actions.retry")}
           </ThemedText>
         </Pressable>
       </ThemedView>

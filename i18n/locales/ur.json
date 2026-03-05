@@ -1,0 +1,73 @@
+{
+  "tabs": {
+    "home": "ہوم",
+    "surahs": "سورتیں",
+    "bookmarks": "محفوظات",
+    "settings": "ترتیبات"
+  },
+  "home": {
+    "greeting": "السلام علیکم",
+    "lastRead": "آخری مطالعہ",
+    "continueReading": "پڑھنا جاری رکھیں",
+    "quickAccess": "فوری رسائی",
+    "juz": "پارے",
+    "bookmarks": "محفوظات",
+    "qibla": "قبلہ",
+    "duas": "دعائیں",
+    "verseOfTheDay": "آیتِ آج",
+    "readTafsir": "تفسیر پڑھیں",
+    "ayah": "آیت",
+    "searchPlaceholder": "سورہ کا نام تلاش کریں...",
+    "all": "تمام",
+    "errorLoad": "سورتیں لوڈ کرنے میں ناکامی۔",
+    "juzIndex": "پارہ کی فہرست"
+  },
+  "settings": {
+    "title": "ترتیبات",
+    "displayTypography": "سکرین اور فونٹس",
+    "theme": "تھیم",
+    "scriptStyle": "رسم الخط",
+    "arabicFontSize": "عربی فونٹ سائز",
+    "translationFontSize": "ترجمہ فونٹ سائز",
+    "readingPreferences": "پڑھنے کی ترجیحات",
+    "reciter": "قاری",
+    "translation": "ترجمہ",
+    "language": "ایپ کی زبان",
+    "audioPlayback": "آواز اور پلے بیک",
+    "autoPlayNextVerse": "اگلی آیت خودکار چلائیں",
+    "showInlineControls": "انلائن کنٹرولز دکھائیں",
+    "themes": {
+      "light": "روشن",
+      "dark": "تاریک",
+      "amoled": "سیاہ"
+    },
+    "scripts": {
+      "uthmani": "عثمانی",
+      "imlaei": "املائی"
+    }
+  },
+  "actions": {
+    "play": "چلائیں",
+    "share": "شیئر کریں",
+    "note": "نوٹ",
+    "tafsir": "تفسیر",
+    "save": "محفوظ کریں",
+    "saved": "محفوظ شدہ",
+    "retry": "دوبارہ کوشش کریں",
+    "loading": "تیار ہو رہا ہے…",
+    "noResults": "\"{{query}}\" سے مماثل کوئی سورت نہیں ملی",
+    "mushafMode": "مصحف",
+    "translationMode": "ترجمہ",
+    "clearAll": "سب صاف کریں",
+    "clearAllBookmarks": "تمام بُک مارکس صاف کریں",
+    "clearAllConfirm": "کیا آپ واقعی تمام بُک مارکس ہٹانا چاہتے ہیں؟ اس عمل کو واپس نہیں لیا جا سکتا۔",
+    "cancel": "منسوخ کریں"
+  },
+  "surah": {
+    "versesCount": "{{count}} آیات",
+    "revelationType": {
+      "meccan": "مکی",
+      "medinan": "مدنی"
+    }
+  }
+}

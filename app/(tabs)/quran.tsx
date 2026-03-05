@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 import { SurahListItem } from "@/components/quran";
@@ -17,6 +18,7 @@ import { Chapter } from "@/services/quranApi";
 
 export default function QuranIndexScreen() {
   const { colors } = useAppTheme();
+  const { t } = useTranslation();
 
   const {
     filteredChapters,
@@ -51,7 +53,7 @@ export default function QuranIndexScreen() {
           color={colors.textSecondary}
           style={{ textAlign: "center", padding: 20 }}
         >
-          Failed to load Surahs.
+          {t("home.errorLoad")}
           {"\n\n"}
           Reason: {error?.message}
         </ThemedText>
@@ -71,7 +73,7 @@ export default function QuranIndexScreen() {
         ]}
       >
         <SearchBar
-          placeholder="Search Surah Name..."
+          placeholder={t("home.searchPlaceholder")}
           value={searchQuery}
           onChangeText={setSearchQuery}
           onClear={() => setSearchQuery("")}
@@ -81,17 +83,17 @@ export default function QuranIndexScreen() {
       {/* Filter Chips */}
       <View style={styles.filterContainer}>
         <FilterChip
-          label="All"
+          label={t("home.all")}
           isActive={activeFilter === "all"}
           onPress={() => setActiveFilter("all")}
         />
         <FilterChip
-          label="Makkah"
+          label={t("surah.revelationType.meccan")}
           isActive={activeFilter === "makkah"}
           onPress={() => setActiveFilter("makkah")}
         />
         <FilterChip
-          label="Madinah"
+          label={t("surah.revelationType.medinan")}
           isActive={activeFilter === "madinah"}
           onPress={() => setActiveFilter("madinah")}
         />
@@ -109,7 +111,9 @@ export default function QuranIndexScreen() {
             nameTransliteration={item.name_simple}
             versesCount={item.verses_count}
             revelationType={
-              item.revelation_place === "makkah" ? "Meccan" : "Medinan"
+              item.revelation_place === "makkah"
+                ? t("surah.revelationType.meccan")
+                : t("surah.revelationType.medinan")
             }
           />
         )}
@@ -119,7 +123,7 @@ export default function QuranIndexScreen() {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <ThemedText color={colors.textSecondary}>
-              No Surahs found matching &quot;{searchQuery}&quot;
+              {t("actions.noResults", { query: searchQuery })}
             </ThemedText>
           </View>
         }

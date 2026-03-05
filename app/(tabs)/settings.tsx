@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, Switch, View } from "react-native";
 
 import {
@@ -42,8 +43,15 @@ const TRANSLATION_OPTIONS: PickerOption[] = [
   { id: 97, label: "Taqi Usmani" },
 ];
 
+const LANGUAGE_OPTIONS: PickerOption[] = [
+  { id: "en", label: "English" },
+  { id: "ar", label: "العربية" },
+  { id: "ur", label: "اردو" },
+];
+
 export default function SettingsScreen() {
   const { colors, mode, setMode } = useAppTheme();
+  const { t } = useTranslation();
 
   const {
     arabicFontSize,
@@ -60,6 +68,8 @@ export default function SettingsScreen() {
     setAutoPlayNextVerse,
     showRecitationControls,
     setShowRecitationControls,
+    appLanguage,
+    setAppLanguage,
   } = useSettingsStore();
 
   return (
@@ -68,26 +78,28 @@ export default function SettingsScreen() {
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* ── DISPLAY & TYPOGRAPHY ── */}
-        <SettingsSection title="Display & Typography">
+        <SettingsSection title={t("settings.displayTypography")}>
           {/* Theme */}
-          <SettingsRow icon="moon.circle.fill" label="Theme">
+          <SettingsRow icon="moon.circle.fill" label={t("settings.theme")}>
             <View style={styles.segmentedControl}>
-              {(["light", "dark", "amoled"] as ThemeMode[]).map((t) => (
+              {(["light", "dark", "amoled"] as ThemeMode[]).map((t_mode) => (
                 <Pressable
-                  key={t}
+                  key={t_mode}
                   style={[
                     styles.segmentBtn,
-                    mode === t && { backgroundColor: colors.gold },
+                    mode === t_mode && { backgroundColor: colors.gold },
                   ]}
-                  onPress={() => setMode(t)}
+                  onPress={() => setMode(t_mode)}
                 >
                   <ThemedText
                     role="caption"
                     color={
-                      mode === t ? colors.navyPrimary : colors.textSecondary
+                      mode === t_mode
+                        ? colors.navyPrimary
+                        : colors.textSecondary
                     }
                   >
-                    {t.charAt(0).toUpperCase() + t.slice(1)}
+                    {t(`settings.themes.${t_mode}`)}
                   </ThemedText>
                 </Pressable>
               ))}
@@ -95,7 +107,10 @@ export default function SettingsScreen() {
           </SettingsRow>
 
           {/* Script Style */}
-          <SettingsRow icon="character.book.closed.fill" label="Script Style">
+          <SettingsRow
+            icon="character.book.closed.fill"
+            label={t("settings.scriptStyle")}
+          >
             <View style={styles.segmentedControl}>
               <Pressable
                 style={[
@@ -112,7 +127,7 @@ export default function SettingsScreen() {
                       : colors.textSecondary
                   }
                 >
-                  Uthmani
+                  {t("settings.scripts.uthmani")}
                 </ThemedText>
               </Pressable>
               <Pressable
@@ -130,14 +145,17 @@ export default function SettingsScreen() {
                       : colors.textSecondary
                   }
                 >
-                  Imlaei
+                  {t("settings.scripts.imlaei")}
                 </ThemedText>
               </Pressable>
             </View>
           </SettingsRow>
 
           {/* Arabic Font Size Stepper */}
-          <SettingsRow icon="textformat.size" label="Arabic Font Size">
+          <SettingsRow
+            icon="textformat.size"
+            label={t("settings.arabicFontSize")}
+          >
             <View style={styles.stepperControl}>
               <Pressable
                 style={[
@@ -170,7 +188,7 @@ export default function SettingsScreen() {
           {/* Translation Font Size Stepper */}
           <SettingsRow
             icon="textformat.size"
-            label="Translation Font Size"
+            label={t("settings.translationFontSize")}
             isLast
           >
             <View style={styles.stepperControl}>
@@ -204,29 +222,45 @@ export default function SettingsScreen() {
         </SettingsSection>
 
         {/* ── READING PREFERENCES ── */}
-        <SettingsSection title="Reading Preferences">
-          <SettingsRow icon="person.wave.2.fill" label="Reciter">
+        <SettingsSection title={t("settings.readingPreferences")}>
+          <SettingsRow icon="person.wave.2.fill" label={t("settings.reciter")}>
             <SettingsPicker
-              title="Select Reciter"
+              title={t("settings.reciter")}
               options={RECITER_OPTIONS}
               selectedId={reciterId}
               onSelect={setReciter}
             />
           </SettingsRow>
 
-          <SettingsRow icon="globe" label="Translation" isLast>
+          <SettingsRow icon="globe" label={t("settings.translation")}>
             <SettingsPicker
-              title="Select Translation"
+              title={t("settings.translation")}
               options={TRANSLATION_OPTIONS}
               selectedId={translationId}
               onSelect={setTranslation}
             />
           </SettingsRow>
+
+          <SettingsRow
+            icon="character.bubble.fill"
+            label={t("settings.language")}
+            isLast
+          >
+            <SettingsPicker
+              title={t("settings.language")}
+              options={LANGUAGE_OPTIONS}
+              selectedId={appLanguage}
+              onSelect={(id) => setAppLanguage(id as "en" | "ar" | "ur")}
+            />
+          </SettingsRow>
         </SettingsSection>
 
         {/* ── AUDIO & PLAYBACK ── */}
-        <SettingsSection title="Audio & Playback">
-          <SettingsRow icon="play.circle.fill" label="Auto-play Next Ayah">
+        <SettingsSection title={t("settings.audioPlayback")}>
+          <SettingsRow
+            icon="play.circle.fill"
+            label={t("settings.autoPlayNextVerse")}
+          >
             <Switch
               value={autoPlayNextVerse}
               onValueChange={setAutoPlayNextVerse}
@@ -239,7 +273,7 @@ export default function SettingsScreen() {
 
           <SettingsRow
             icon="slider.horizontal.3"
-            label="Show Inline Controls"
+            label={t("settings.showInlineControls")}
             isLast
           >
             <Switch

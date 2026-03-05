@@ -3,6 +3,7 @@ import { FontSize } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedText, ThemedView } from "../ui";
 import { IconSymbol } from "../ui/icon-symbol";
@@ -10,7 +11,7 @@ import { IconSymbol } from "../ui/icon-symbol";
 type QuickAccessItem = {
   id: string;
   icon: string;
-  label: string;
+  labelKey: string;
   route: string;
 };
 
@@ -18,22 +19,33 @@ const ITEMS: QuickAccessItem[] = [
   {
     id: "surah",
     icon: "book.pages.fill",
-    label: "Surah",
+    labelKey: "tabs.surahs",
     route: "/(tabs)/quran",
   },
-  { id: "juz", icon: "book.closed.fill", label: "Juz", route: "/juz" },
+  { id: "juz", icon: "book.closed.fill", labelKey: "home.juz", route: "/juz" },
   {
     id: "bookmark",
     icon: "bookmark.fill",
-    label: "Bookmarks",
+    labelKey: "home.bookmarks",
     route: "/(tabs)/bookmarks",
   },
-  { id: "qibla", icon: "location.north.fill", label: "Qibla", route: "/qibla" },
-  { id: "duas", icon: "hands.sparkles.fill", label: "Duas", route: "/duas" },
+  {
+    id: "qibla",
+    icon: "location.north.fill",
+    labelKey: "home.qibla",
+    route: "/qibla",
+  },
+  {
+    id: "duas",
+    icon: "hands.sparkles.fill",
+    labelKey: "home.duas",
+    route: "/duas",
+  },
 ];
 
 export function QuickAccessRow() {
   const { colors } = useAppTheme();
+  const { t } = useTranslation();
   const router = useRouter();
 
   const handlePress = (route: string) => {
@@ -67,7 +79,7 @@ export function QuickAccessRow() {
               color={colors.textPrimary}
               style={styles.label}
             >
-              {item.label}
+              {t(item.labelKey)}
             </ThemedText>
           </Pressable>
         ))}
