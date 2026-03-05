@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -27,6 +28,7 @@ import { stripHtml } from "@/utils/text";
 type ViewMode = "mushaf" | "translation";
 
 export default function SurahDetailScreen() {
+  const { t } = useTranslation();
   const { id, verse, mode, isJuz } = useLocalSearchParams<{
     id: string;
     verse?: string;
