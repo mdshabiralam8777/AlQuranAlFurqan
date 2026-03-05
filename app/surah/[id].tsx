@@ -82,11 +82,18 @@ export default function SurahDetailScreen() {
 
   const displayVerses = useMemo(() => {
     if (!verses) return undefined;
-    if (isJuzMode && initialVerse) {
-      return verses.filter((v) => v.verse_number >= initialVerse);
+
+    // Filter out verse 1 for chapter 1 (Al-Fatihah) because it's already shown as the Bismillah SVG header
+    let filtered = verses;
+    if (chapterId === 1) {
+      filtered = filtered.filter((v) => v.verse_number !== 1);
     }
-    return verses;
-  }, [verses, isJuzMode, initialVerse]);
+
+    if (isJuzMode && initialVerse) {
+      return filtered.filter((v) => v.verse_number >= initialVerse);
+    }
+    return filtered;
+  }, [verses, isJuzMode, initialVerse, chapterId]);
 
   // Group verses by their physical Mushaf page number for continuous rendering flow (Mushaf Mode)
   const pages = useMemo(() => {

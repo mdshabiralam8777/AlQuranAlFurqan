@@ -1,6 +1,7 @@
 import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
+import { useLastReadStore } from "@/store/lastReadStore";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
@@ -11,16 +12,15 @@ export function LastReadCard() {
   const { colors } = useAppTheme();
   const router = useRouter();
 
-  // NOTE: Stubbed data for Phase 5. In later phases, we wire this to Zustand/MMKV
-  const lastRead = {
-    surahId: 18,
-    surahNameEng: "Al-Kahf",
-    surahNameArabic: "الكهف",
-    ayahNumber: 10,
-  };
+  const { lastRead } = useLastReadStore();
+
+  if (!lastRead) {
+    return null;
+  }
 
   const handlePress = () => {
-    router.push(`/surah/${lastRead.surahId}`);
+    // Navigate to the exact verse in translation view
+    router.push(`/surah/${lastRead.surahId}?verse=${lastRead.ayahNumber}`);
   };
 
   return (

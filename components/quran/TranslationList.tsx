@@ -6,6 +6,7 @@ import { AyahRow, VerseData } from "@/components/quran/AyahRow";
 import { Bismillah } from "@/components/ui";
 import { Spacing } from "@/constants/spacing";
 import { Chapter, Verse } from "@/services/quranApi";
+import { useLastReadStore } from "@/store/lastReadStore";
 
 const TypedFlashList = FlashList as any;
 
@@ -29,6 +30,7 @@ export function TranslationList({
   initialVerse,
 }: TranslationListProps) {
   const listRef = useRef<any>(null);
+  const { setLastRead } = useLastReadStore();
 
   const renderItem = ({ item }: { item: Verse }) => {
     const translationText =
@@ -78,6 +80,23 @@ export function TranslationList({
       estimatedItemSize={200}
       contentContainerStyle={{ paddingBottom: Spacing.xxl }}
       showsVerticalScrollIndicator={false}
+      onViewableItemsChanged={({ viewableItems }: any) => {
+        if (!chapter || viewableItems.length === 0) return;
+        // The first viewable item is typically the topmost one on the screen
+        const topItem = viewableItems[0].item as Verse;
+        if (topItem && topItem.verse_number) {
+          setLastRead({
+            surahId: chapter.id,
+            surahNameEng: chapter.translated_name.name,
+            surahNameArabic: chapter.name_arabic,
+            ayahNumber: topItem.verse_number,
+          });
+        }
+      }}
+      viewabilityConfig={{
+        itemVisiblePercentThreshold: 50, // trigger when 50% of the item is visible
+        minimumViewTime: 500, // require item to be visible for 500ms before triggering
+      }}
       onLoad={() => {
         if (initialVerse && verses && verses.length > 0) {
           const targetIndex = verses.findIndex(
