@@ -17,7 +17,13 @@ interface IslamicDividerProps {
   ornamentSize?: number;
 }
 
-function CenterOrnament({ color, size }: { color: string; size: number }) {
+export function CenterOrnament({
+  color,
+  size,
+}: {
+  color: string;
+  size: number;
+}) {
   return (
     <Svg width={size} height={size} viewBox="0 0 18 18">
       {/* Diamond */}

@@ -61,7 +61,7 @@ export function SurahHeader({
         </View>
 
         <View style={styles.centerSection}>
-          <ThemedText role="caption" color={colors.textSecondary}>
+          <ThemedText color={colors.textSecondary} style={styles.metaText}>
             {revelationType} • {versesCount} Verses
           </ThemedText>
         </View>
@@ -124,5 +124,9 @@ const styles = StyleSheet.create({
   arabicName: {
     fontSize: 20, // Slightly smaller to fit compact layout
     textAlign: "right",
+  },
+  metaText: {
+    fontSize: 9,
+    opacity: 0.7,
   },
 });

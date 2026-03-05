@@ -53,7 +53,7 @@ export function MushafList({
       keyExtractor={(item: MushafPageData) => item.pageNumber.toString()}
       ListHeaderComponent={ListHeaderComponent}
       estimatedItemSize={600}
-      contentContainerStyle={{ paddingBottom: Spacing.xxl }}
+      contentContainerStyle={{ paddingBottom: Spacing.md }}
       showsVerticalScrollIndicator={false}
       onViewableItemsChanged={({ viewableItems }: any) => {
         if (!chapter || viewableItems.length === 0) return;

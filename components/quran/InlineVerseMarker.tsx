@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text } from "react-native";
 
-import { FontFamily, FontSize, LineHeight } from "@/constants/typography";
+import { FontFamily, FontSize } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
 
 interface InlineVerseMarkerProps {
@@ -10,6 +10,8 @@ interface InlineVerseMarkerProps {
   onPress?: (verseNumber: number) => void;
   /** Whether this verse is currently bookmarked — changes the marker color */
   isBookmarked?: boolean;
+  /** When true, omits trailing space to prevent empty line wrapping */
+  isLastOnPage?: boolean;
 }
 
 /**
@@ -20,6 +22,7 @@ export function InlineVerseMarker({
   verseNumber,
   onPress,
   isBookmarked,
+  isLastOnPage,
 }: InlineVerseMarkerProps) {
   const { colors } = useAppTheme();
 
@@ -43,7 +46,7 @@ export function InlineVerseMarker({
       onPress={onPress ? () => onPress(verseNumber) : undefined}
       suppressHighlighting={false}
     >
-      {` ﴿${arabicNumber}﴾ `}
+      {isLastOnPage ? `﴿${arabicNumber}﴾` : ` ﴿${arabicNumber}﴾ `}
     </Text>
   );
 }
@@ -52,6 +55,8 @@ const styles = StyleSheet.create({
   marker: {
     fontFamily: FontFamily.amiri,
     fontSize: FontSize.lg,
-    lineHeight: FontSize.lg * LineHeight.normal,
+    // MUST match the parent Text's lineHeight (LINE_HEIGHT in MushafPage)
+    // to prevent inconsistent line heights when a marker wraps solo onto a line.
+    lineHeight: 48,
   },
 });
