@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { zustandStorage } from "@/services/storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -38,7 +38,7 @@ export const useLastReadStore = create<LastReadState>()(
     }),
     {
       name: "aqaf-last-read",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => zustandStorage),
     },
   ),
 );

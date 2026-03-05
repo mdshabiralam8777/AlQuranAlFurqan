@@ -50,6 +50,7 @@ type ViewMode = "arabic" | "translation" | "wordByWord";
 interface AyahRowProps {
   verse: VerseData;
   arabicFontSize?: number;
+  translationFontSize?: number;
   isPlaying?: boolean;
   isBookmarked?: boolean;
   showTranslation?: boolean;
@@ -63,6 +64,7 @@ interface AyahRowProps {
 export function AyahRow({
   verse,
   arabicFontSize = ArabicFontSizes.md,
+  translationFontSize = 16,
   isPlaying = false,
   isBookmarked = false,
   showTranslation = true,
@@ -183,7 +185,11 @@ export function AyahRow({
               { borderTopColor: colors.separator },
             ]}
           >
-            <ThemedText role="translation" color={colors.textSecondary}>
+            <ThemedText
+              role="translation"
+              color={colors.textSecondary}
+              style={{ fontSize: translationFontSize }}
+            >
               {verse.translationText}
             </ThemedText>
           </View>

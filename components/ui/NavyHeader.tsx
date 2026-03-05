@@ -14,7 +14,7 @@ export function NavyHeader() {
       style={[
         styles.container,
         {
-          backgroundColor: colors.navyPrimary,
+          backgroundColor: colors.bgSecondary,
           marginTop: insets.top + Spacing.md,
         },
       ]}

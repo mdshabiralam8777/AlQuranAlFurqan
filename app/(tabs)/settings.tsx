@@ -1,26 +1,61 @@
 import React from "react";
 import { Pressable, ScrollView, StyleSheet, Switch, View } from "react-native";
 
+import {
+  PickerOption,
+  SettingsPicker,
+} from "@/components/settings/SettingsPicker";
 import { SettingsRow } from "@/components/settings/SettingsRow";
 import { SettingsSection } from "@/components/settings/SettingsSection";
 import { NavyHeader, ThemedText, ThemedView } from "@/components/ui";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import type { ThemeMode } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useSettingsStore } from "@/store/settingsStore";
 
-export default function SettingsScreen() {
-  const { colors } = useAppTheme();
+/* ────────────────────────────────────────────
+ * Static option lists
+ * (Later these can come from the backend API)
+ * ──────────────────────────────────────────── */
+const RECITER_OPTIONS: PickerOption[] = [
+  { id: 7, label: "Mishary Rashid Al-Afasy" },
+  { id: 1, label: "Abdul Basit (Murattal)" },
+  { id: 2, label: "Abdul Rahman Al-Sudais" },
+  { id: 3, label: "Abu Bakr Al-Shatri" },
+  { id: 4, label: "Hani Ar-Rifai" },
+  { id: 5, label: "Mahmoud Khalil Al-Hussary" },
+  { id: 6, label: "Maher Al-Muaiqly" },
+  { id: 9, label: "Sa'ud Ash-Shuraim" },
+  { id: 10, label: "Mohamed Siddiq Al-Minshawi" },
+];
 
-  // Connect to Zustand store
+const TRANSLATION_OPTIONS: PickerOption[] = [
+  { id: 20, label: "Sahih International" },
+  { id: 131, label: "Dr. Mustafa Khattab (The Clear Quran)" },
+  { id: 85, label: "Abdul Haleem" },
+  { id: 21, label: "Pickthall" },
+  { id: 22, label: "Yusuf Ali" },
+  { id: 95, label: "Abul A'la Maududi" },
+  { id: 234, label: "Fateh Muhammad Jalandhry (Urdu)" },
+  { id: 97, label: "Taqi Usmani" },
+];
+
+export default function SettingsScreen() {
+  const { colors, mode, setMode } = useAppTheme();
+
   const {
-    theme,
-    setTheme,
     arabicFontSize,
     setArabicFontSize,
+    translationFontSize,
+    setTranslationFontSize,
     scriptStyle,
     setScriptStyle,
+    reciterId,
+    setReciter,
+    translationId,
+    setTranslation,
     autoPlayNextVerse,
     setAutoPlayNextVerse,
     showRecitationControls,
@@ -32,24 +67,24 @@ export default function SettingsScreen() {
       <NavyHeader />
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* SECTION: Display & Typography */}
+        {/* ── DISPLAY & TYPOGRAPHY ── */}
         <SettingsSection title="Display & Typography">
           {/* Theme */}
           <SettingsRow icon="moon.circle.fill" label="Theme">
             <View style={styles.segmentedControl}>
-              {(["light", "dark", "amoled"] as const).map((t) => (
+              {(["light", "dark", "amoled"] as ThemeMode[]).map((t) => (
                 <Pressable
                   key={t}
                   style={[
                     styles.segmentBtn,
-                    theme === t && { backgroundColor: colors.gold },
+                    mode === t && { backgroundColor: colors.gold },
                   ]}
-                  onPress={() => setTheme(t)}
+                  onPress={() => setMode(t)}
                 >
                   <ThemedText
                     role="caption"
                     color={
-                      theme === t ? colors.navyPrimary : colors.textSecondary
+                      mode === t ? colors.navyPrimary : colors.textSecondary
                     }
                   >
                     {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -101,8 +136,8 @@ export default function SettingsScreen() {
             </View>
           </SettingsRow>
 
-          {/* Font Size Stepper */}
-          <SettingsRow icon="textformat.size" label="Arabic Font Size" isLast>
+          {/* Arabic Font Size Stepper */}
+          <SettingsRow icon="textformat.size" label="Arabic Font Size">
             <View style={styles.stepperControl}>
               <Pressable
                 style={[
@@ -131,9 +166,65 @@ export default function SettingsScreen() {
               </Pressable>
             </View>
           </SettingsRow>
+
+          {/* Translation Font Size Stepper */}
+          <SettingsRow
+            icon="textformat.size"
+            label="Translation Font Size"
+            isLast
+          >
+            <View style={styles.stepperControl}>
+              <Pressable
+                style={[
+                  styles.stepperBtn,
+                  { backgroundColor: colors.bgPrimary },
+                ]}
+                onPress={() =>
+                  setTranslationFontSize(Math.max(12, translationFontSize - 2))
+                }
+              >
+                <IconSymbol name="minus" size={16} color={colors.textPrimary} />
+              </Pressable>
+              <ThemedText style={styles.stepperValue}>
+                {translationFontSize}
+              </ThemedText>
+              <Pressable
+                style={[
+                  styles.stepperBtn,
+                  { backgroundColor: colors.bgPrimary },
+                ]}
+                onPress={() =>
+                  setTranslationFontSize(Math.min(32, translationFontSize + 2))
+                }
+              >
+                <IconSymbol name="plus" size={16} color={colors.textPrimary} />
+              </Pressable>
+            </View>
+          </SettingsRow>
         </SettingsSection>
 
-        {/* SECTION: Audio & Playback */}
+        {/* ── READING PREFERENCES ── */}
+        <SettingsSection title="Reading Preferences">
+          <SettingsRow icon="person.wave.2.fill" label="Reciter">
+            <SettingsPicker
+              title="Select Reciter"
+              options={RECITER_OPTIONS}
+              selectedId={reciterId}
+              onSelect={setReciter}
+            />
+          </SettingsRow>
+
+          <SettingsRow icon="globe" label="Translation" isLast>
+            <SettingsPicker
+              title="Select Translation"
+              options={TRANSLATION_OPTIONS}
+              selectedId={translationId}
+              onSelect={setTranslation}
+            />
+          </SettingsRow>
+        </SettingsSection>
+
+        {/* ── AUDIO & PLAYBACK ── */}
         <SettingsSection title="Audio & Playback">
           <SettingsRow icon="play.circle.fill" label="Auto-play Next Ayah">
             <Switch
@@ -175,7 +266,7 @@ const styles = StyleSheet.create({
   },
   segmentedControl: {
     flexDirection: "row",
-    backgroundColor: "rgba(0,0,0,0.1)", // fallback transparent darker/lighter
+    backgroundColor: "rgba(0,0,0,0.1)",
     borderRadius: BorderRadius.sm,
     padding: 2,
   },

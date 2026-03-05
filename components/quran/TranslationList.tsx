@@ -5,6 +5,7 @@ import { AyahRow, VerseData } from "@/components/quran/AyahRow";
 import { Spacing } from "@/constants/spacing";
 import { Chapter, Verse } from "@/services/quranApi";
 import { useLastReadStore } from "@/store/lastReadStore";
+import { useSettingsStore } from "@/store/settingsStore";
 
 const TypedFlashList = FlashList as any;
 
@@ -29,6 +30,8 @@ export function TranslationList({
 }: TranslationListProps) {
   const listRef = useRef<any>(null);
   const { setLastRead } = useLastReadStore();
+  const { arabicFontSize, translationFontSize, scriptStyle } =
+    useSettingsStore();
 
   const renderItem = ({ item }: { item: Verse }) => {
     const translationText =
@@ -39,10 +42,15 @@ export function TranslationList({
         verse={{
           id: item.id,
           verseKey: item.verse_key,
-          textUthmani: item.text_uthmani || item.text_imlaei || "",
+          textUthmani:
+            scriptStyle === "uthmani"
+              ? item.text_uthmani || item.text_imlaei || ""
+              : item.text_imlaei || item.text_uthmani || "",
           translationText,
           isSajdah: !!item.sajdah_number,
         }}
+        arabicFontSize={arabicFontSize}
+        translationFontSize={translationFontSize}
         isBookmarked={isBookmarked(item.verse_key)}
         onBookmark={onBookmark}
         showTranslation={true}
@@ -59,6 +67,7 @@ export function TranslationList({
       keyExtractor={(item: any) => item.id.toString()}
       ListHeaderComponent={ListHeaderComponent}
       estimatedItemSize={200}
+      extraData={`${arabicFontSize}-${translationFontSize}-${scriptStyle}`}
       contentContainerStyle={{ paddingBottom: Spacing.xxl }}
       showsVerticalScrollIndicator={false}
       onViewableItemsChanged={({ viewableItems }: any) => {

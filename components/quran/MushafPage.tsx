@@ -6,10 +6,11 @@ import { Bismillah, ThemedText } from "@/components/ui";
 import { Spacing } from "@/constants/spacing";
 import { useAppTheme } from "@/context/ThemeContext";
 import { Verse } from "@/services/quranApi";
+import { useSettingsStore } from "@/store/settingsStore";
 import { InlineVerseMarker } from "./InlineVerseMarker";
 
-/** Matches the lineHeight in inlineText style — single source of truth */
-const LINE_HEIGHT = 48;
+/** Ratio of line height to font size for Mushaf text */
+const LH_RATIO = 1.72;
 
 /** Upper-bound of lines per page — the excess is clipped away */
 const MAX_LINES = 30;
@@ -71,6 +72,8 @@ export function MushafPage({
   bookmarkedVerseKeys,
 }: MushafPageProps) {
   const { colors } = useAppTheme();
+  const { arabicFontSize, scriptStyle } = useSettingsStore();
+  const lineHeight = Math.round(arabicFontSize * LH_RATIO);
 
   return (
     <View style={styles.pageContainer}>
@@ -85,7 +88,7 @@ export function MushafPage({
             to the natural height of the text flow below. */}
         <View style={styles.contentArea}>
           <LinedBackground
-            lineHeight={LINE_HEIGHT}
+            lineHeight={lineHeight}
             color={colors.textSecondary}
             count={MAX_LINES}
           />
@@ -93,10 +96,11 @@ export function MushafPage({
           {/* We use a single wrapper Text node so all child Text nodes flow continuously inline */}
           <Text style={[styles.textFlow, { textAlign: "justify" }]}>
             {verses.map((verse, index) => {
+              // Select text based on script style preference
               let verseText = (
-                verse.text_uthmani ||
-                verse.text_imlaei ||
-                ""
+                scriptStyle === "uthmani"
+                  ? verse.text_uthmani || verse.text_imlaei || ""
+                  : verse.text_imlaei || verse.text_uthmani || ""
               ).trim();
 
               // For Surah Al-Fatihah, Verse 1 *is* the Bismillah.
@@ -118,7 +122,13 @@ export function MushafPage({
 
               return (
                 <React.Fragment key={verse.verse_key}>
-                  <ThemedText role="arabic" style={styles.inlineText}>
+                  <ThemedText
+                    role="arabic"
+                    style={[
+                      styles.inlineText,
+                      { fontSize: arabicFontSize, lineHeight: lineHeight },
+                    ]}
+                  >
                     {verseText}
                   </ThemedText>
                   <InlineVerseMarker
@@ -130,7 +140,13 @@ export function MushafPage({
                     isLastOnPage={isLastVerse}
                   />
                   {!isLastVerse && (
-                    <ThemedText role="arabic" style={styles.inlineText}>
+                    <ThemedText
+                      role="arabic"
+                      style={[
+                        styles.inlineText,
+                        { fontSize: arabicFontSize, lineHeight: lineHeight },
+                      ]}
+                    >
                       {" "}
                     </ThemedText>
                   )}
@@ -168,9 +184,7 @@ const styles = StyleSheet.create({
     ...(Platform.OS === "android" ? { includeFontPadding: false } : {}),
   },
   inlineText: {
-    // Override default role="arabic" to be larger and more legible for the Mushaf view
-    fontSize: 28,
-    lineHeight: LINE_HEIGHT,
+    // fontSize and lineHeight are applied inline from settingsStore
   },
   pageIndicator: {
     textAlign: "center",

@@ -1,22 +1,26 @@
 /**
  * ThemeContext — provides active color tokens + theme mode to the entire app.
  * Defaults to the device's system color scheme.
- * TODO: swap storage to react-native-mmkv once installed for persistent preference.
+ * Theme preference is persisted via AsyncStorage for restoration on launch.
  *
  * Usage:
  *   const { colors, mode, setMode, isDark } = useAppTheme();
  */
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
 import { useColorScheme } from "react-native";
 
 import { Colors, ColorTokens, ThemeMode } from "@/constants/colors";
+
+const THEME_STORAGE_KEY = "@aqaf/theme";
 
 interface ThemeContextValue {
   mode: ThemeMode;
@@ -34,9 +38,18 @@ export function AppThemeProvider({ children }: { children: React.ReactNode }) {
     systemScheme === "dark" ? "dark" : "light",
   );
 
+  // Restore persisted theme on mount
+  useEffect(() => {
+    AsyncStorage.getItem(THEME_STORAGE_KEY).then((stored) => {
+      if (stored === "light" || stored === "dark" || stored === "amoled") {
+        setModeState(stored);
+      }
+    });
+  }, []);
+
   const setMode = useCallback((next: ThemeMode) => {
     setModeState(next);
-    // TODO: persist with MMKV — mmkv.set('@aqaf/theme', next)
+    AsyncStorage.setItem(THEME_STORAGE_KEY, next);
   }, []);
 
   const value = useMemo<ThemeContextValue>(

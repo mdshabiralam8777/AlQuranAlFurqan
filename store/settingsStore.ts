@@ -1,16 +1,10 @@
+import { zustandStorage } from "@/services/storage";
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
-// In future phases, we will add MMKV persistence here.
-// For now, it's just an in-memory Zustand store.
-
-type ThemeMode = "light" | "dark" | "amoled";
 type ScriptStyle = "uthmani" | "imlaei";
 
 interface SettingsState {
-  // Theme & Appearance
-  theme: ThemeMode;
-  setTheme: (theme: ThemeMode) => void;
-
   // Font Size
   arabicFontSize: number;
   translationFontSize: number;
@@ -23,33 +17,61 @@ interface SettingsState {
 
   // Audio Preferences
   reciterId: number;
-  setReciterId: (id: number) => void;
+  reciterName: string;
+  setReciter: (id: number, name: string) => void;
   autoPlayNextVerse: boolean;
   setAutoPlayNextVerse: (val: boolean) => void;
+
+  // Translation Preferences
+  translationId: number;
+  translationName: string;
+  setTranslation: (id: number, name: string) => void;
 
   // UI Toggles
   showRecitationControls: boolean;
   setShowRecitationControls: (val: boolean) => void;
 }
 
-export const useSettingsStore = create<SettingsState>((set) => ({
-  theme: "dark", // default to dark matching our initial design sprint
-  setTheme: (theme) => set({ theme }),
+export const useSettingsStore = create<SettingsState>()(
+  persist(
+    (set) => ({
+      arabicFontSize: 32,
+      translationFontSize: 16,
+      setArabicFontSize: (size) => set({ arabicFontSize: size }),
+      setTranslationFontSize: (size) => set({ translationFontSize: size }),
 
-  arabicFontSize: 32,
-  translationFontSize: 16,
-  setArabicFontSize: (size) => set({ arabicFontSize: size }),
-  setTranslationFontSize: (size) => set({ translationFontSize: size }),
+      scriptStyle: "uthmani",
+      setScriptStyle: (style) => set({ scriptStyle: style }),
 
-  scriptStyle: "uthmani",
-  setScriptStyle: (style) => set({ scriptStyle: style }),
+      reciterId: 7,
+      reciterName: "Mishary Rashid Al-Afasy",
+      setReciter: (id, name) => set({ reciterId: id, reciterName: name }),
 
-  reciterId: 7, // Mishary Rashid Alafasy default
-  setReciterId: (id) => set({ reciterId: id }),
+      autoPlayNextVerse: true,
+      setAutoPlayNextVerse: (val) => set({ autoPlayNextVerse: val }),
 
-  autoPlayNextVerse: true,
-  setAutoPlayNextVerse: (val) => set({ autoPlayNextVerse: val }),
+      translationId: 20,
+      translationName: "Sahih International",
+      setTranslation: (id, name) =>
+        set({ translationId: id, translationName: name }),
 
-  showRecitationControls: true,
-  setShowRecitationControls: (val) => set({ showRecitationControls: val }),
-}));
+      showRecitationControls: true,
+      setShowRecitationControls: (val) => set({ showRecitationControls: val }),
+    }),
+    {
+      name: "aqaf-settings",
+      storage: createJSONStorage(() => zustandStorage),
+      partialize: (state) => ({
+        arabicFontSize: state.arabicFontSize,
+        translationFontSize: state.translationFontSize,
+        scriptStyle: state.scriptStyle,
+        reciterId: state.reciterId,
+        reciterName: state.reciterName,
+        autoPlayNextVerse: state.autoPlayNextVerse,
+        translationId: state.translationId,
+        translationName: state.translationName,
+        showRecitationControls: state.showRecitationControls,
+      }),
+    },
+  ),
+);
