@@ -1,0 +1,202 @@
+[
+  {
+    "Arabic": "الحَمْدُ لِلَّهِ الَّذي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+    "EnTranslation": "All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection.",
+    "UrTranslation": "تمام تعریفیں اللہ کے لیے ہیں جس نے ہمیں مارنے (نیند) کے بعد زندہ کیا اور اسی کی طرف اٹھ کر جانا ہے۔",
+    "EnglishLabel": "Upon waking up",
+    "UrduLabel": "سو کر اٹھنے کے وقت",
+    "Reference": "Sahih al-Bukhari 6312"
+  },
+  {
+    "Arabic": "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+    "EnTranslation": "In Your name, O Allah, I die and I live.",
+    "UrTranslation": "اے اللہ! میں تیرے ہی نام پر مرتا ہوں اور جیتا ہوں۔",
+    "EnglishLabel": "Before sleeping",
+    "UrduLabel": "سونے سے پہلے",
+    "Reference": "Sahih al-Bukhari 6312"
+  },
+  {
+    "Arabic": "بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+    "EnTranslation": "In the name of Allah, I place my trust in Allah, and there is no might nor power except with Allah.",
+    "UrTranslation": "اللہ کے نام سے، میں نے اللہ پر توکل کیا، اور اللہ کی توفیق کے بغیر نہ کسی گناہ سے بچنے کی طاقت ہے اور نہ نیکی کرنے کی ہمت۔",
+    "EnglishLabel": "When leaving the house",
+    "UrduLabel": "گھر سے نکلتے وقت",
+    "Reference": "Sunan Abi Dawud 5095 (Sahih)"
+  },
+  {
+    "Arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ",
+    "EnTranslation": "O Allah, I seek refuge with You from the male and female devils.",
+    "UrTranslation": "اے اللہ! میں خبیث جنوں اور خبیث جنیوں سے تیری پناہ مانگتا ہوں۔",
+    "EnglishLabel": "Before entering the toilet",
+    "UrduLabel": "بیت الخلاء میں داخل ہونے سے پہلے",
+    "Reference": "Sahih al-Bukhari 142"
+  },
+  {
+    "Arabic": "غُفْرَانَكَ",
+    "EnTranslation": "I ask You (Allah) for forgiveness.",
+    "UrTranslation": "میں تیری بخشش مانگتا ہوں۔",
+    "EnglishLabel": "After leaving the toilet",
+    "UrduLabel": "بیت الخلاء سے نکلنے کے بعد",
+    "Reference": "Sunan Abi Dawud 30 (Sahih)"
+  },
+  {
+    "Arabic": "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ",
+    "EnTranslation": "I bear witness that there is no deity worthy of worship except Allah alone without partner, and I bear witness that Muhammad is His slave and Messenger.",
+    "UrTranslation": "میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود برحق نہیں، وہ اکیلا ہے اس کا کوئی شریک نہیں، اور میں گواہی دیتا ہوں کہ محمد ﷺ اس کے بندے اور رسول ہیں۔",
+    "EnglishLabel": "After completing Wudu",
+    "UrduLabel": "وضو کے بعد",
+    "Reference": "Sahih Muslim 234"
+  },
+  {
+    "Arabic": "بِسْمِ اللَّهِ",
+    "EnTranslation": "In the name of Allah.",
+    "UrTranslation": "اللہ کے نام سے۔",
+    "EnglishLabel": "Before starting a meal",
+    "UrduLabel": "کھانا شروع کرنے سے پہلے",
+    "Reference": "Sahih al-Bukhari 5376"
+  },
+  {
+    "Arabic": "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ",
+    "EnTranslation": "All praise is to Allah Who has fed me this and provided it for me without any strength or power on my part.",
+    "UrTranslation": "تمام تعریفیں اس اللہ کے لیے ہیں جس نے مجھے یہ کھلایا اور میری کسی طاقت اور قوت کے بغیر مجھے یہ رزق دیا۔",
+    "EnglishLabel": "After finishing a meal",
+    "UrduLabel": "کھانا کھانے کے بعد",
+    "Reference": "Sunan Abi Dawud 4023 (Hasan)"
+  },
+  {
+    "Arabic": "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ",
+    "EnTranslation": "O Allah, open the doors of Your mercy for me.",
+    "UrTranslation": "اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے۔",
+    "EnglishLabel": "When entering the mosque",
+    "UrduLabel": "مسجد میں داخل ہوتے وقت",
+    "Reference": "Sahih Muslim 713"
+  },
+  {
+    "Arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ",
+    "EnTranslation": "O Allah, I ask You from Your bounty.",
+    "UrTranslation": "اے اللہ! میں تجھ سے تیرا فضل مانگتا ہوں۔",
+    "EnglishLabel": "When leaving the mosque",
+    "UrduLabel": "مسجد سے نکلتے وقت",
+    "Reference": "Sahih Muslim 713"
+  },
+  {
+    "Arabic": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ، وَغَلَبَةِ الرِّجَالِ",
+    "EnTranslation": "O Allah, I seek refuge in You from anxiety and sorrow, weakness and laziness, miserliness and cowardice, the burden of debts and from being overpowered by men.",
+    "UrTranslation": "اے اللہ! میں فکر اور غم، عاجزی اور سستی، بخل اور بزدلی، قرض کے بوجھ اور لوگوں کے غلبہ سے تیری پناہ مانگتا ہوں۔",
+    "EnglishLabel": "When feeling anxious or sorrowful",
+    "UrduLabel": "پریشانی اور غم کے وقت",
+    "Reference": "Sahih al-Bukhari 2893"
+  },
+  {
+    "Arabic": "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ",
+    "EnTranslation": "O Changer of the hearts, make my heart firm upon Your religion.",
+    "UrTranslation": "اے دلوں کو پھیرنے والے! میرے دل کو اپنے دین پر ثابت رکھ۔",
+    "EnglishLabel": "For steadfastness in faith",
+    "UrduLabel": "ایمان پر ثابت قدمی کے لیے",
+    "Reference": "Jami' at-Tirmidhi 3522 (Sahih)"
+  },
+  {
+    "Arabic": "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
+    "EnTranslation": "Sufficient for us is Allah, and [He is] the best Disposer of affairs.",
+    "UrTranslation": "ہمیں اللہ کافی ہے اور وہ بہترین کارساز ہے۔",
+    "EnglishLabel": "During difficult times or facing fear",
+    "UrduLabel": "مشکل وقت یا خوف کے عالم میں",
+    "Reference": "Sahih al-Bukhari 4563"
+  },
+  {
+    "Arabic": "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الأَجْرُ إِنْ شَاءَ اللَّهُ",
+    "EnTranslation": "The thirst is gone, the veins are moistened, and the reward is confirmed, if Allah wills.",
+    "UrTranslation": "پیاس بجھ گئی، رگیں تر ہو گئیں، اور اگر اللہ نے چاہا تو ثواب پکا ہو گیا۔",
+    "EnglishLabel": "When breaking the fast (Iftar)",
+    "UrduLabel": "روزہ افطار کرتے وقت",
+    "Reference": "Sunan Abi Dawud 2357 (Hasan)"
+  },
+  {
+    "Arabic": "اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا، وَأَنْتَ تَجْعَلُ الْحَزْنَ سَهْلًا إِذَا شِئْتَ",
+    "EnTranslation": "O Allah, there is no ease except in that which You have made easy, and You make the difficulty, if You wish, easy.",
+    "UrTranslation": "اے اللہ! کوئی کام آسان نہیں مگر وہی جسے تو آسان کر دے، اور تو جب چاہے مشکل کو آسان کر دیتا ہے۔",
+    "EnglishLabel": "When facing a difficult task",
+    "UrduLabel": "کسی مشکل کام کا سامنا ہونے پر",
+    "Reference": "Sahih Ibn Hibban 974 (Sahih)"
+  },
+  {
+    "Arabic": "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ",
+    "EnTranslation": "Glory is to Him Who has provided this for us though we could never have had it by our efforts. Surely, unto our Lord we are returning.",
+    "UrTranslation": "پاک ہے وہ ذات جس نے اس (سواری) کو ہمارے تابع کر دیا حالانکہ ہم اسے قابو میں لانے والے نہ تھے، اور بے شک ہم اپنے رب کی طرف لوٹ کر جانے والے ہیں۔",
+    "EnglishLabel": "When mounting a vehicle or starting a journey",
+    "UrduLabel": "سواری پر بیٹھتے وقت یا سفر شروع کرتے وقت",
+    "Reference": "Sahih Muslim 1342"
+  },
+  {
+    "Arabic": "اللَّهُمَّ صَيِّبًا نَافِعًا",
+    "EnTranslation": "O Allah, (bring) beneficial rain clouds.",
+    "UrTranslation": "اے اللہ! نفع بخش بارش برسا۔",
+    "EnglishLabel": "When it is raining",
+    "UrduLabel": "بارش ہوتے وقت",
+    "Reference": "Sahih al-Bukhari 1032"
+  },
+  {
+    "Arabic": "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ",
+    "EnTranslation": "I seek refuge in Allah from the accursed devil.",
+    "UrTranslation": "میں شیطان مردود سے اللہ کی پناہ مانگتا ہوں۔",
+    "EnglishLabel": "When feeling angry",
+    "UrduLabel": "غصہ آنے کے وقت",
+    "Reference": "Sahih al-Bukhari 6115"
+  },
+  {
+    "Arabic": "لَا بَأْسَ طَهُورٌ إِنْ شَاءَ اللَّهُ",
+    "EnTranslation": "No harm, (it is a) purification (from sins), if Allah wills.",
+    "UrTranslation": "کوئی حرج نہیں، اگر اللہ نے چاہا تو یہ (بیماری گناہوں سے) پاک کرنے والی ہے۔",
+    "EnglishLabel": "When visiting the sick",
+    "UrduLabel": "مریض کی عیادت کے وقت",
+    "Reference": "Sahih al-Bukhari 3616"
+  },
+  {
+    "Arabic": "الْحَمْدُ لِلَّهِ",
+    "EnTranslation": "All praise is due to Allah.",
+    "UrTranslation": "تمام تعریفیں اللہ کے لیے ہیں۔",
+    "EnglishLabel": "When you sneeze",
+    "UrduLabel": "چھینک آنے پر",
+    "Reference": "Sahih al-Bukhari 6224"
+  },
+  {
+    "Arabic": "يَرْحَمُكَ اللَّهُ",
+    "EnTranslation": "May Allah have mercy on you.",
+    "UrTranslation": "اللہ تم پر رحم کرے۔",
+    "EnglishLabel": "When replying to someone who sneezes and says 'Alhamdulillah'",
+    "UrduLabel": "چھینکنے والا جب الحمد للہ کہے تو اس کے جواب میں",
+    "Reference": "Sahih al-Bukhari 6224"
+  },
+  {
+    "Arabic": "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+    "EnTranslation": "O Allah, You are my Lord, there is none worthy of worship but You. You created me and I am Your slave. I keep Your covenant and my pledge to You so far as I am able. I seek refuge in You from the evil of what I have done. I admit to Your blessings upon me, and I admit to my misdeeds. Forgive me, for there is none who may forgive sins but You.",
+    "UrTranslation": "اے اللہ! تو ہی میرا رب ہے، تیرے سوا کوئی سچا معبود نہیں، تو نے مجھے پیدا کیا اور میں تیرا بندہ ہوں، اور میں اپنی طاقت کے مطابق تیرے عہد اور وعدے پر قائم ہوں۔ میں اپنے کیے کے شر سے تیری پناہ مانگتا ہوں، اپنے اوپر تیری نعمتوں کا اقرار کرتا ہوں، اور اپنے گناہوں کا اعتراف کرتا ہوں، پس مجھے بخش دے، کیونکہ تیرے سوا گناہوں کو کوئی نہیں بخش سکتا۔",
+    "EnglishLabel": "The best supplication for forgiveness (Sayyid al-Istighfar)",
+    "UrduLabel": "استغفار کی سب سے افضل دعا (سید الاستغفار)",
+    "Reference": "Sahih al-Bukhari 6306"
+  },
+  {
+    "Arabic": "الْحَمْدُ لِلَّهِ الَّذِي عَافَانِي مِمَّا ابْتَلَاكَ بِهِ، وَفَضَّلَنِي عَلَى كَثِيرٍ مِمَّنْ خَلَقَ تَفْضِيلًا",
+    "EnTranslation": "Praise is to Allah Who has kept me safe from that which He has afflicted you with, and Who has favored me greatly over much of His creation.",
+    "UrTranslation": "تمام تعریفیں اس اللہ کے لیے ہیں جس نے مجھے اس مصیبت سے عافیت دی جس میں تجھے مبتلا کیا، اور مجھے اپنی بہت سی مخلوقات پر بڑی فضیلت دی۔",
+    "EnglishLabel": "When seeing someone in affliction or hardship",
+    "UrduLabel": "کسی کو مصیبت یا بیماری میں مبتلا دیکھ کر",
+    "Reference": "Jami' at-Tirmidhi 3431 (Hasan)"
+  },
+  {
+    "Arabic": "اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ كَسَوْتَنِيهِ، أَسْأَلُكَ مِنْ خَيْرِهِ وَخَيْرِ مَا صُنِعَ لَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّهِ وَشَرِّ مَا صُنِعَ لَهُ",
+    "EnTranslation": "O Allah, praise is to You. You have clothed me. I ask You for its goodness and the goodness of what it has been made for, and I seek Your protection from the evil of it and the evil of what it has been made for.",
+    "UrTranslation": "اے اللہ! تیرے ہی لیے تعریف ہے، تو نے مجھے یہ پہنایا، میں تجھ سے اس کی بھلائی اور جس کے لیے یہ بنایا گیا ہے اس کی بھلائی مانگتا ہوں، اور اس کے شر اور جس کے لیے یہ بنایا گیا ہے اس کے شر سے تیری پناہ مانگتا ہوں۔",
+    "EnglishLabel": "When wearing a new garment",
+    "UrduLabel": "نیا کپڑا پہنتے وقت",
+    "Reference": "Sunan Abi Dawud 4020 (Sahih)"
+  },
+  {
+    "Arabic": "بِسْمِ اللَّهِ، اللَّهُمَّ جَنِّبْنَا الشَّيْطَانَ، وَجَنِّبِ الشَّيْطَانَ مَا رَزَقْتَنَا",
+    "EnTranslation": "In the Name of Allah. O Allah, keep the devil away from us and keep the devil away from that which You provide for us.",
+    "UrTranslation": "اللہ کے نام سے، اے اللہ! ہمیں شیطان سے بچا اور جو اولاد تو ہمیں عطا کرے اسے بھی شیطان سے بچا۔",
+    "EnglishLabel": "Before marital intimacy",
+    "UrduLabel": "بیوی کے پاس جانے (ہمبستری) کی دعا",
+    "Reference": "Sahih al-Bukhari 6388"
+  }
+]

@@ -15,7 +15,7 @@ type QuickAccessItem = {
   route: string;
 };
 
-const ITEMS: QuickAccessItem[] = [
+const TOP_ITEMS: QuickAccessItem[] = [
   {
     id: "surah",
     icon: "book.pages.fill",
@@ -23,6 +23,21 @@ const ITEMS: QuickAccessItem[] = [
     route: "/(tabs)/quran",
   },
   { id: "juz", icon: "book.closed.fill", labelKey: "home.juz", route: "/juz" },
+];
+
+const BOTTOM_ITEMS: QuickAccessItem[] = [
+  {
+    id: "duas",
+    icon: "hands.sparkles.fill",
+    labelKey: "home.duas",
+    route: "/duas",
+  },
+  {
+    id: "favorite",
+    icon: "heart.fill",
+    labelKey: "home.favorite",
+    route: "/favorite",
+  },
   {
     id: "bookmark",
     icon: "bookmark.fill",
@@ -30,16 +45,10 @@ const ITEMS: QuickAccessItem[] = [
     route: "/(tabs)/bookmarks",
   },
   {
-    id: "qibla",
-    icon: "location.north.fill",
-    labelKey: "home.qibla",
-    route: "/qibla",
-  },
-  {
-    id: "duas",
-    icon: "hands.sparkles.fill",
-    labelKey: "home.duas",
-    route: "/duas",
+    id: "info",
+    icon: "info.circle",
+    labelKey: "home.info",
+    route: "/info",
   },
 ];
 
@@ -54,8 +63,39 @@ export function QuickAccessRow() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.rowContent}>
-        {ITEMS.map((item) => (
+      <View style={styles.topRowContent}>
+        {TOP_ITEMS.map((item) => (
+          <Pressable
+            key={item.id}
+            onPress={() => handlePress(item.route)}
+            style={({ pressed }) => [
+              styles.topItemContainer,
+              { opacity: pressed ? 0.7 : 1 },
+            ]}
+          >
+            <ThemedView
+              layer="secondary"
+              style={[styles.topIconCircle, { borderColor: colors.separator }]}
+            >
+              <IconSymbol
+                name={item.icon as any}
+                size={34}
+                color={colors.gold}
+              />
+            </ThemedView>
+            <ThemedText
+              role="label"
+              color={colors.textPrimary}
+              style={styles.topLabel}
+            >
+              {t(item.labelKey)}
+            </ThemedText>
+          </Pressable>
+        ))}
+      </View>
+
+      <View style={styles.bottomRowContent}>
+        {BOTTOM_ITEMS.map((item) => (
           <Pressable
             key={item.id}
             onPress={() => handlePress(item.route)}
@@ -93,10 +133,34 @@ const styles = StyleSheet.create({
     marginTop: Spacing.xl,
     marginBottom: Spacing.md,
   },
-  rowContent: {
+  topRowContent: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    paddingHorizontal: Spacing.xl,
+    marginBottom: Spacing.xl,
+  },
+  bottomRowContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: Spacing.lg,
+  },
+  topItemContainer: {
+    alignItems: "center",
+    width: 80,
+  },
+  topIconCircle: {
+    width: 66,
+    height: 66,
+    borderRadius: 33,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    marginBottom: Spacing.sm,
+  },
+  topLabel: {
+    textAlign: "center",
+    fontSize: FontSize.base,
+    fontWeight: "500",
   },
   itemContainer: {
     alignItems: "center",

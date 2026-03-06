@@ -49,6 +49,15 @@ const MAPPING = {
   "book.closed.fill": "menu-book",
   "location.north.fill": "explore",
   "hands.sparkles.fill": "auto-awesome",
+  "info.circle": "info",
+  "info.circle.fill": "info",
+  "heart.fill": "favorite",
+
+  // Duas
+  "sun.max.fill": "wb-sunny",
+  "moon.stars.fill": "nightlight-round",
+  "text.book.closed.fill": "library-books",
+  "tag.fill": "label",
 
   // Default Expo
   "paperplane.fill": "send",
