@@ -62,6 +62,7 @@ export default function SurahDetailScreen() {
   );
 
   const {
+    bookmarks,
     isBookmarked,
     toggleBookmark,
     isChapterBookmarked,
@@ -119,7 +120,6 @@ export default function SurahDetailScreen() {
   }, [displayVerses]);
 
   // Pre-compute bookmarked verse keys for O(1) lookups
-  const { bookmarks } = useBookmarkStore();
   const bookmarkedVerseKeys = useMemo(() => {
     return new Set(bookmarks.map((b) => b.verseKey));
   }, [bookmarks]);
@@ -305,6 +305,7 @@ export default function SurahDetailScreen() {
           translationMap={translationMap}
           isBookmarked={isBookmarked}
           onBookmark={handleBookmark}
+          bookmarks={bookmarks}
           ListHeaderComponent={renderHeader()}
           initialVerse={initialVerse}
         />

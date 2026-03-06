@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { AyahRow, VerseData } from "@/components/quran/AyahRow";
 import { Spacing } from "@/constants/spacing";
 import { Chapter, Verse } from "@/services/quranApi";
+import { Bookmark } from "@/store/bookmarkStore";
 import { useLastReadStore } from "@/store/lastReadStore";
 import { useSettingsStore } from "@/store/settingsStore";
 
@@ -17,6 +18,7 @@ interface TranslationListProps {
   onBookmark: (verse: VerseData) => void;
   ListHeaderComponent: React.ReactElement | null;
   initialVerse?: number;
+  bookmarks?: Bookmark[];
 }
 
 export function TranslationList({
@@ -27,6 +29,7 @@ export function TranslationList({
   onBookmark,
   ListHeaderComponent,
   initialVerse,
+  bookmarks,
 }: TranslationListProps) {
   const listRef = useRef<any>(null);
   const { setLastRead } = useLastReadStore();
@@ -67,7 +70,7 @@ export function TranslationList({
       keyExtractor={(item: any) => item.id.toString()}
       ListHeaderComponent={ListHeaderComponent}
       estimatedItemSize={200}
-      extraData={`${arabicFontSize}-${translationFontSize}-${scriptStyle}`}
+      extraData={`${arabicFontSize}-${translationFontSize}-${scriptStyle}-${bookmarks?.length ?? 0}-${bookmarks?.map((b) => b.verseKey).join(",")}`}
       contentContainerStyle={{ paddingBottom: Spacing.xxl }}
       showsVerticalScrollIndicator={false}
       onViewableItemsChanged={({ viewableItems }: any) => {
