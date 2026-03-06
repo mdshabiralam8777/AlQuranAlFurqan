@@ -69,7 +69,7 @@ export default function QuranIndexScreen() {
       <View
         style={[
           styles.searchContainer,
-          { backgroundColor: colors.navyPrimary },
+          { backgroundColor: colors.bgSecondary },
         ]}
       >
         <SearchBar

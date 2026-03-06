@@ -1,5 +1,5 @@
 import { Spacing } from "@/constants/spacing";
-import { FontSize } from "@/constants/typography";
+import { FontFamily, FontSize } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -15,17 +15,7 @@ type QuickAccessItem = {
   route: string;
 };
 
-const TOP_ITEMS: QuickAccessItem[] = [
-  {
-    id: "surah",
-    icon: "book.pages.fill",
-    labelKey: "tabs.surahs",
-    route: "/(tabs)/quran",
-  },
-  { id: "juz", icon: "book.closed.fill", labelKey: "home.juz", route: "/juz" },
-];
-
-const BOTTOM_ITEMS: QuickAccessItem[] = [
+const QUICK_ITEMS: QuickAccessItem[] = [
   {
     id: "duas",
     icon: "hands.sparkles.fill",
@@ -63,39 +53,86 @@ export function QuickAccessRow() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topRowContent}>
-        {TOP_ITEMS.map((item) => (
-          <Pressable
-            key={item.id}
-            onPress={() => handlePress(item.route)}
-            style={({ pressed }) => [
-              styles.itemContainer,
-              { opacity: pressed ? 0.7 : 1 },
-            ]}
-          >
-            <ThemedView
-              layer="secondary"
-              style={[styles.iconCircle, { borderColor: colors.separator }]}
-            >
+      {/* Segmented Toggle: Surah / Juz */}
+      <View
+        style={[
+          styles.segmentContainer,
+          { backgroundColor: `${colors.gold}12` },
+        ]}
+      >
+        <Pressable
+          onPress={() => handlePress("/(tabs)/quran")}
+          style={({ pressed }) => [
+            styles.segmentButton,
+            {
+              backgroundColor: pressed ? colors.gold : `${colors.gold}25`,
+              borderColor: `${colors.gold}40`,
+            },
+          ]}
+        >
+          {({ pressed }) => (
+            <View style={styles.segmentInner}>
               <IconSymbol
-                name={item.icon as any}
-                size={22}
-                color={colors.gold}
+                name="book.pages.fill"
+                size={18}
+                color={pressed ? colors.navyPrimary : colors.gold}
               />
-            </ThemedView>
-            <ThemedText
-              role="label"
-              color={colors.textPrimary}
-              style={styles.label}
-            >
-              {t(item.labelKey)}
-            </ThemedText>
-          </Pressable>
-        ))}
+              <ThemedText
+                style={[
+                  styles.segmentLabel,
+                  {
+                    color: pressed ? colors.navyPrimary : colors.gold,
+                  },
+                ]}
+              >
+                {t("tabs.surahs")}
+              </ThemedText>
+            </View>
+          )}
+        </Pressable>
+
+        <View
+          style={[
+            styles.segmentDivider,
+            { backgroundColor: `${colors.gold}30` },
+          ]}
+        />
+
+        <Pressable
+          onPress={() => handlePress("/juz")}
+          style={({ pressed }) => [
+            styles.segmentButton,
+            {
+              backgroundColor: pressed ? colors.gold : `${colors.gold}25`,
+              borderColor: `${colors.gold}40`,
+            },
+          ]}
+        >
+          {({ pressed }) => (
+            <View style={styles.segmentInner}>
+              <IconSymbol
+                name="book.closed.fill"
+                size={18}
+                color={pressed ? colors.navyPrimary : colors.gold}
+              />
+              <ThemedText
+                style={[
+                  styles.segmentLabel,
+                  {
+                    color: pressed ? colors.navyPrimary : colors.gold,
+                  },
+                ]}
+              >
+                {t("home.juz")}
+              </ThemedText>
+            </View>
+          )}
+        </Pressable>
       </View>
 
-      <View style={styles.bottomRowContent}>
-        {BOTTOM_ITEMS.map((item) => (
+      {/* Quick Access Icons Row */}
+      <View style={styles.iconsRow}>
+        {QUICK_ITEMS.map((item) => (
           <Pressable
             key={item.id}
             onPress={() => handlePress(item.route)}
@@ -132,18 +169,43 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Spacing.xl,
     marginBottom: Spacing.md,
+    gap: Spacing.xl,
   },
-  topRowContent: {
+  /* Segmented Control */
+  segmentContainer: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    paddingHorizontal: Spacing.xl,
-    marginBottom: Spacing.xl,
+    marginHorizontal: Spacing.lg,
+    borderRadius: 14,
+    padding: 4,
+    alignItems: "center",
   },
-  bottomRowContent: {
+  segmentButton: {
+    flex: 1,
+    paddingVertical: Spacing.md,
+    borderRadius: 11,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  segmentInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.sm,
+  },
+  segmentLabel: {
+    fontSize: FontSize.base,
+    fontFamily: FontFamily.interSemiBold,
+    fontWeight: "600",
+  },
+  segmentDivider: {
+    width: 1,
+    height: 24,
+    marginHorizontal: 2,
+  },
+  /* Quick Icons */
+  iconsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: Spacing.lg,
-    marginBottom: Spacing.xl,
   },
   itemContainer: {
     alignItems: "center",

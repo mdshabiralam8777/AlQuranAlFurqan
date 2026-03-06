@@ -19,9 +19,9 @@ export function SearchBar({ style, value, onClear, ...props }: SearchBarProps) {
   const { colors } = useAppTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.navyPrimary }]}>
+    <View style={[styles.container, { backgroundColor: colors.bgSecondary }]}>
       <View
-        style={[styles.inputWrapper, { backgroundColor: colors.bgSecondary }]}
+        style={[styles.inputWrapper, { backgroundColor: colors.bgPrimary }]}
       >
         <IconSymbol
           name="magnifyingglass"

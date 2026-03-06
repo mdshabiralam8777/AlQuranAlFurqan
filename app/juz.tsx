@@ -24,7 +24,7 @@ export default function JuzListScreen() {
         style={[
           styles.navBar,
           {
-            backgroundColor: colors.navyPrimary,
+            backgroundColor: colors.bgSecondary,
             paddingTop: insets.top + Spacing.xs,
           },
         ]}

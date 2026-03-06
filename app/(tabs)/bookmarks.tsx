@@ -85,7 +85,7 @@ export default function BookmarksScreen() {
         style={[
           styles.header,
           {
-            backgroundColor: colors.navyPrimary,
+            backgroundColor: colors.bgSecondary,
             paddingTop: insets.top + Spacing.sm,
           },
         ]}
