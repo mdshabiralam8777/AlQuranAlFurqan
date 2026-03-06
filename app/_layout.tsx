@@ -76,6 +76,8 @@ function RootStack() {
         <Stack.Screen name="juz" options={{ headerShown: false }} />
         <Stack.Screen name="duas/index" options={{ headerShown: false }} />
         <Stack.Screen name="duas/[category]" options={{ headerShown: false }} />
+        <Stack.Screen name="favorites" options={{ headerShown: false }} />
+        <Stack.Screen name="info" options={{ headerShown: false }} />
         <Stack.Screen
           name="modal"
           options={{ presentation: "modal", title: "Modal" }}

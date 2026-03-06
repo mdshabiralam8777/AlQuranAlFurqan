@@ -36,7 +36,7 @@ const BOTTOM_ITEMS: QuickAccessItem[] = [
     id: "favorite",
     icon: "heart.fill",
     labelKey: "home.favorite",
-    route: "/favorite",
+    route: "/favorites",
   },
   {
     id: "bookmark",
@@ -69,24 +69,24 @@ export function QuickAccessRow() {
             key={item.id}
             onPress={() => handlePress(item.route)}
             style={({ pressed }) => [
-              styles.topItemContainer,
+              styles.itemContainer,
               { opacity: pressed ? 0.7 : 1 },
             ]}
           >
             <ThemedView
               layer="secondary"
-              style={[styles.topIconCircle, { borderColor: colors.separator }]}
+              style={[styles.iconCircle, { borderColor: colors.separator }]}
             >
               <IconSymbol
                 name={item.icon as any}
-                size={34}
+                size={22}
                 color={colors.gold}
               />
             </ThemedView>
             <ThemedText
               role="label"
               color={colors.textPrimary}
-              style={styles.topLabel}
+              style={styles.label}
             >
               {t(item.labelKey)}
             </ThemedText>
@@ -143,24 +143,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: Spacing.lg,
-  },
-  topItemContainer: {
-    alignItems: "center",
-    width: 80,
-  },
-  topIconCircle: {
-    width: 66,
-    height: 66,
-    borderRadius: 33,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    marginBottom: Spacing.sm,
-  },
-  topLabel: {
-    textAlign: "center",
-    fontSize: FontSize.base,
-    fontWeight: "500",
+    marginBottom: Spacing.xl,
   },
   itemContainer: {
     alignItems: "center",
