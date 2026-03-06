@@ -58,10 +58,12 @@ Based on the provided design specifications (Screens 1–6).
 
 ### 3.2 Home Dashboard (Screen 2)
 
-- **Header**: Midnight Navy background. Shows "Assalamu Alaikum", Location, Date, and a Notification bell.
+- **Header**: Midnight Navy background. Shows "Assalamu Alaikum", Location, Date. Logo header replaced by minimal `NavyHeader`.
 - **Top Card (Last Read)**: Elevated Ivory card. Shows Surah Name, Ayah number, "Continue Reading" button.
-- **Quick Access Row**: Horizontal scrolling pills/circles for (Juz, Bookmark, Qibla, Duas).
-- **Verse of the Day**: Housed in a styled card with translation.
+- **Quick Access Row**:
+  - **Top Row**: Segmented gold pill toggle (Surah | Juz).
+  - **Bottom Row**: Utility icon circles (Duas, Favorite, Bookmarks, Info).
+- **Verse of the Day**: Housed in a styled card with translation, gold references, and dynamic day-of-year rotation algorithm for 30 curated verses.
 
 ### 3.3 Surah Index (Explore/Search - Screen 3)
 
@@ -97,11 +99,19 @@ Two interchangeable viewing modes to give users preference:
 
 ### 3.5 Settings / Configuration (Screen 4)
 
-- **Header**: "Settings"
+- **Header**: Tab title "Settings".
 - **Controls**:
-  - Dropdowns for: Reciter (e.g. Mishari Rashid), Translation (e.g. Sahih International), Script Style.
-  - Slider: Font Size adjustment (`A` to `A+`).
-  - Toggles: "Auto-play Ayah", "Ayah Recitation Controls".
+  - Theme toggles (Light, Dark, AMOLED).
+  - Dropdowns for: Reciter, Translation, App Language (EN/AR/UR), Script Style (Uthmani/Imlaei).
+  - Slider/Buttons: Font Size adjustment (`-` and `+` for Arabic & Translation).
+  - Toggles: "Auto-play Next Verse", "Show Recitation Controls".
+
+### 3.6 Companion Content Screens
+
+- **Duas**: Nested stack. Categories card list → Dedicated FlashList for Duas (Arabic + Multilingual + Meta tags).
+- **Favorites**: Curated daily recitations and essential protective verses. Embedded in standard List layout with animated expand/collapse.
+- **Info**: Tajweed waqf (stop) rulings displayed using reusable `Accordion` component. Trilingual content.
+- **Bookmarks**: Full swipe-to-delete integration using Reanimated + Gesture Handler. Clear all functionality.
 
 ---
 

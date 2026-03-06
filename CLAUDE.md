@@ -47,24 +47,36 @@ Full feature breakdown and roadmap: [`PRD.md`](./PRD.md)
 ```
 AlQuranAlFurqan/
 ├── app/                    # Expo Router — file-based screens
-│   ├── (tabs)/             # Tab navigator group
+│   ├── (tabs)/             # Tab navigator group (Home, Quran, Bookmarks, Settings)
 │   ├── surah/[id].tsx      # Surah detail screen
+│   ├── duas/               # Duas feature (Categories & List)
+│   ├── favorites.tsx       # Favorites curated screen
+│   ├── info.tsx            # Info & Tajweed screen
+│   ├── juz.tsx             # Juz index screen
 │   └── _layout.tsx         # Root layout / providers
 ├── components/             # Shared, reusable UI components
-│   ├── ui/                 # Atomic UI primitives (Button, Text, Icon…)
-│   └── quran/              # Domain-specific components (AyahRow, PlayerBar…)
-├── constants/              # Design tokens, colors, typography, spacing
-├── hooks/                  # Custom React hooks
-├── store/                  # Zustand stores (theme, bookmarks, audio state)
-├── services/               # API calls and business logic
-│   ├── quranApi.ts         # TanStack Query hooks wrapping the backend proxy
-│   └── audioService.ts     # Track player management
-├── types/                  # Global TypeScript interfaces and types
-├── assets/                 # Fonts, images, icons
+│   ├── ui/                 # Atomic UI primitives (Accordion, SearchBar, FilterChip…)
+│   ├── quran/              # Domain components (AyahRow, VerseOfTheDay, QuickAccessRow…)
+│   ├── duas/               # Dua-specific cards
+│   └── bookmarks/          # Bookmark list items
+├── constants/              # Design tokens (colors, typography, spacing, theme)
+├── context/                # Context Providers (ThemeContext)
+├── data/                   # Static curated JSON/TS data
+│   ├── duas/               # Curated collections of Duas
+│   ├── verseOfTheDay.ts    # Date-based daily verse rotation pool
+│   ├── favorites.ts        # Hand-picked favorite surahs/verses
+│   └── info.ts             # Tajweed rules data
+├── hooks/                  # Custom React hooks (useChaptersSearch, etc)
+├── store/                  # Zustand stores (settings, bookmarks, lastRead)
+├── services/               # API calls
+│   ├── quranApi.ts         # TanStack Query hooks wrapping our Express proxy
+│   └── storage.ts          # MMKV initialization
+├── types/                  # Global TypeScript interfaces
+├── i18n/                   # Localizations (en, ar, ur)
+├── assets/                 # Fonts, images, SVG
 └── backend/                # Express proxy server (separate deployable)
     ├── src/
     │   ├── routes/
-    │   ├── controllers/
     │   ├── services/
     │   └── middleware/
     └── package.json

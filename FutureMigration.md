@@ -45,3 +45,17 @@ Before any of the above, the project needs:
 4. Test on physical device via `npx expo run:android` / `npx expo run:ios`
 
 > **Note:** After switching to dev builds, Expo Go can no longer be used for this project.
+
+---
+
+## 4. SQLite / WatermelonDB (Phase 7 — Data Scale)
+
+**Why:** Currently, all Dua JSONs, Tajweed rules, and Favorites are loaded into JavaScript memory or queried via `Array.find`. As the app grows (especially adding Hadith collections or full Tafsir text), JSON loading will cause JS thread blockages and increased RAM usage.
+
+**When to Migrate:** If/when the static data payload exceeds ~10MB, or if startup time degrades.
+
+**Migration Steps:**
+
+1. Introduce `expo-sqlite` or `@nozbe/watermelondb`.
+2. Move JSON content (`data/duas/*.json`, `data/favorites.ts`, `data/info.ts`) into a pre-populated SQLite database file shipped with the app assets.
+3. Replace synchronous direct array imports with async database queries.
