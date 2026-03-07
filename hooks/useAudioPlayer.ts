@@ -33,7 +33,7 @@ export const useAudioPlayer = () => {
     updateProgress(progress.position, progress.duration);
   }, [progress.position, progress.duration, updateProgress]);
 
-  useTrackPlayerEvents(events, async (event) => {
+  useTrackPlayerEvents(events, async (event: any) => {
     if (event.type === Event.PlaybackState) {
       if (event.state === State.Playing) {
         setPlaying(true);
@@ -57,7 +57,6 @@ export const useAudioPlayer = () => {
       if (index !== undefined && index !== null) {
         const track = await TrackPlayer.getTrack(index);
         if (track) {
-          // track expects our PlaybackTrack extensions (verseKey, chapterId)
           setCurrentTrack(track.verseKey as string, track.chapterId as number);
         }
       }

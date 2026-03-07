@@ -24,6 +24,7 @@ import "../i18n";
 import MiniPlayer from "@/components/audio/MiniPlayer";
 import { audioService } from "@/services/audioService";
 import { PlaybackService } from "@/services/playbackService";
+
 import TrackPlayer from "react-native-track-player";
 
 TrackPlayer.registerPlaybackService(() => PlaybackService);

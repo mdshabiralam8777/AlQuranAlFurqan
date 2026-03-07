@@ -1,4 +1,4 @@
-import { Track } from "react-native-track-player";
+import type { Track } from "react-native-track-player";
 
 export interface Reciter {
   id: number;
