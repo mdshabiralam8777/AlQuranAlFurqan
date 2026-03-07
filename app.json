@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.alquran.alfurqan"
     },
     "android": {
       "package": "com.alquran.alfurqan",
@@ -39,7 +40,8 @@
             "backgroundColor": "#0A192F"
           }
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,

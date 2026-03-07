@@ -21,6 +21,13 @@ import { AppThemeProvider, useAppTheme } from "@/context/ThemeContext";
 import { useSettingsStore } from "@/store/settingsStore";
 import "../i18n";
 
+import MiniPlayer from "@/components/audio/MiniPlayer";
+import { audioService } from "@/services/audioService";
+import { PlaybackService } from "@/services/playbackService";
+import TrackPlayer from "react-native-track-player";
+
+TrackPlayer.registerPlaybackService(() => PlaybackService);
+
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient({
@@ -61,6 +68,10 @@ function RootStack() {
     }
   }, [appLanguage, i18n]);
 
+  useEffect(() => {
+    audioService.setupPlayer();
+  }, []);
+
   return (
     <>
       <Stack
@@ -83,13 +94,15 @@ function RootStack() {
           options={{ presentation: "modal", title: "Modal" }}
         />
       </Stack>
+      <MiniPlayer />
       <StatusBar style={isDark ? "light" : "dark"} />
     </>
   );
 }
 
 export const unstable_settings = {
-  anchor: "(tabs)",
+  // Ensure that reloading on `/cart` keeps a back button present.
+  initialRouteName: "(tabs)",
 };
 
 export default function RootLayout() {

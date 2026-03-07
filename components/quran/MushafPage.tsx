@@ -23,6 +23,7 @@ interface MushafPageProps {
   onVersePress?: (verse: Verse) => void;
   /** Set of bookmarked verse keys for visual indicator */
   bookmarkedVerseKeys?: Set<string>;
+  playingVerseKey?: string | null;
 }
 
 /**
@@ -70,6 +71,7 @@ export function MushafPage({
   showBismillah,
   onVersePress,
   bookmarkedVerseKeys,
+  playingVerseKey,
 }: MushafPageProps) {
   const { colors } = useAppTheme();
   const { arabicFontSize, scriptStyle } = useSettingsStore();
@@ -119,6 +121,7 @@ export function MushafPage({
               }
 
               const isLastVerse = index === verses.length - 1;
+              const isPlaying = playingVerseKey === verse.verse_key;
 
               return (
                 <React.Fragment key={verse.verse_key}>
@@ -127,6 +130,7 @@ export function MushafPage({
                     style={[
                       styles.inlineText,
                       { fontSize: arabicFontSize, lineHeight: lineHeight },
+                      isPlaying && { color: colors.gold },
                     ]}
                   >
                     {verseText}

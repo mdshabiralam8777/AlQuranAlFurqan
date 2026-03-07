@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { SurahHeader } from "@/components/quran";
 import { VerseData } from "@/components/quran/AyahRow";
+import DownloadButton from "@/components/quran/DownloadButton";
 import { MushafList } from "@/components/quran/MushafList";
 import { TranslationList } from "@/components/quran/TranslationList";
 import { ViewModeToggle } from "@/components/quran/ViewModeToggle";
@@ -23,6 +24,7 @@ import {
   Verse,
 } from "@/services/quranApi";
 import { useBookmarkStore } from "@/store/bookmarkStore";
+import { useSettingsStore } from "@/store/settingsStore";
 import { stripHtml } from "@/utils/text";
 
 type ViewMode = "mushaf" | "translation";
@@ -68,6 +70,19 @@ export default function SurahDetailScreen() {
     isChapterBookmarked,
     toggleChapterBookmark,
   } = useBookmarkStore();
+
+  const { reciterId } = useSettingsStore();
+  const { play, loadChapterQueue, currentVerseKey } = useAudioPlayer();
+
+  const handlePlay = useCallback(
+    (verse: VerseData) => {
+      // e.g "1:2"
+      const verseNumber = parseInt(verse.verseKey.split(":")[1], 10);
+      loadChapterQueue(chapterId, reciterId, verseNumber);
+      play();
+    },
+    [chapterId, reciterId, loadChapterQueue, play],
+  );
 
   const chapter = useMemo(() => {
     return chapters?.find((c) => c.id === chapterId);
@@ -280,13 +295,22 @@ export default function SurahDetailScreen() {
         >
           {chapter?.name_simple || "Surah"}
         </ThemedText>
-        <Pressable onPress={handleHeaderBookmark} style={styles.navButton}>
-          <IconSymbol
-            name={isCurrentChapterBookmarked ? "bookmark.fill" : "bookmark"}
-            size={20}
-            color={colors.gold}
-          />
-        </Pressable>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={styles.navButton}>
+            <DownloadButton
+              chapterId={chapterId}
+              reciterId={reciterId}
+              color={colors.gold}
+            />
+          </View>
+          <Pressable onPress={handleHeaderBookmark} style={styles.navButton}>
+            <IconSymbol
+              name={isCurrentChapterBookmarked ? "bookmark.fill" : "bookmark"}
+              size={20}
+              color={colors.gold}
+            />
+          </Pressable>
+        </View>
       </View>
 
       {viewMode === "mushaf" ? (
@@ -297,6 +321,7 @@ export default function SurahDetailScreen() {
           bookmarkedVerseKeys={bookmarkedVerseKeys}
           ListHeaderComponent={renderHeader()}
           initialVerse={initialVerse}
+          playingVerseKey={currentVerseKey}
         />
       ) : (
         <TranslationList
@@ -308,6 +333,8 @@ export default function SurahDetailScreen() {
           bookmarks={bookmarks}
           ListHeaderComponent={renderHeader()}
           initialVerse={initialVerse}
+          onPlay={handlePlay}
+          playingVerseKey={currentVerseKey}
         />
       )}
     </ThemedView>

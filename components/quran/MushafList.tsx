@@ -20,6 +20,7 @@ interface MushafListProps {
   bookmarkedVerseKeys: Set<string>;
   ListHeaderComponent: React.ReactElement | null;
   initialVerse?: number;
+  playingVerseKey?: string | null;
 }
 
 export function MushafList({
@@ -29,6 +30,7 @@ export function MushafList({
   bookmarkedVerseKeys,
   ListHeaderComponent,
   initialVerse,
+  playingVerseKey,
 }: MushafListProps) {
   const mushafListRef = useRef<any>(null);
   const { setLastRead } = useLastReadStore();
@@ -41,6 +43,7 @@ export function MushafList({
         showBismillah={false}
         onVersePress={onBookmark}
         bookmarkedVerseKeys={bookmarkedVerseKeys}
+        playingVerseKey={playingVerseKey}
       />
     );
   };

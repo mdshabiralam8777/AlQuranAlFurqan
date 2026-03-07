@@ -19,6 +19,8 @@ interface TranslationListProps {
   ListHeaderComponent: React.ReactElement | null;
   initialVerse?: number;
   bookmarks?: Bookmark[];
+  onPlay?: (verse: VerseData) => void;
+  playingVerseKey?: string | null;
 }
 
 export function TranslationList({
@@ -30,6 +32,8 @@ export function TranslationList({
   ListHeaderComponent,
   initialVerse,
   bookmarks,
+  onPlay,
+  playingVerseKey,
 }: TranslationListProps) {
   const listRef = useRef<any>(null);
   const { setLastRead } = useLastReadStore();
@@ -56,6 +60,8 @@ export function TranslationList({
         translationFontSize={translationFontSize}
         isBookmarked={isBookmarked(item.verse_key)}
         onBookmark={onBookmark}
+        onPlay={onPlay}
+        isPlaying={playingVerseKey === item.verse_key}
         showTranslation={true}
         viewMode="translation"
       />
@@ -70,7 +76,7 @@ export function TranslationList({
       keyExtractor={(item: any) => item.id.toString()}
       ListHeaderComponent={ListHeaderComponent}
       estimatedItemSize={200}
-      extraData={`${arabicFontSize}-${translationFontSize}-${scriptStyle}-${bookmarks?.length ?? 0}-${bookmarks?.map((b) => b.verseKey).join(",")}`}
+      extraData={`${arabicFontSize}-${translationFontSize}-${scriptStyle}-${bookmarks?.length ?? 0}-${playingVerseKey}-${bookmarks?.map((b) => b.verseKey).join(",")}`}
       contentContainerStyle={{ paddingBottom: Spacing.xxl }}
       showsVerticalScrollIndicator={false}
       onViewableItemsChanged={({ viewableItems }: any) => {

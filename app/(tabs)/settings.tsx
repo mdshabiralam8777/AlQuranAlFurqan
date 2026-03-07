@@ -14,6 +14,7 @@ import type { ThemeMode } from "@/constants/colors";
 import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
+import { useReciters } from "@/services/quranApi";
 import { useSettingsStore } from "@/store/settingsStore";
 
 /* ────────────────────────────────────────────
@@ -50,6 +51,14 @@ const LANGUAGE_OPTIONS: PickerOption[] = [
 ];
 
 export default function SettingsScreen() {
+  const { data: recitersData } = useReciters();
+
+  const RECITER_OPTIONS_DYNAMIC =
+    recitersData?.map((r) => ({
+      id: r.id,
+      label: r.reciter_name,
+    })) || RECITER_OPTIONS;
+
   const { colors, mode, setMode } = useAppTheme();
   const { t } = useTranslation();
 
@@ -226,7 +235,7 @@ export default function SettingsScreen() {
           <SettingsRow icon="person.wave.2.fill" label={t("settings.reciter")}>
             <SettingsPicker
               title={t("settings.reciter")}
-              options={RECITER_OPTIONS}
+              options={RECITER_OPTIONS_DYNAMIC}
               selectedId={reciterId}
               onSelect={setReciter}
             />

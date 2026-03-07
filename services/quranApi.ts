@@ -1,6 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Platform } from "react-native";
+import {
+  AudioFile,
+  RecitationsResponse,
+  Reciter,
+  RecitersResponse,
+} from "../types/audio";
 
 // The base URL must point to our Express backend proxy, not the Quran API directly.
 // This is injected via .env.local during the Expo build.
@@ -152,6 +158,21 @@ const quranApi = {
     );
     return data.translations;
   },
+
+  getReciters: async (): Promise<Reciter[]> => {
+    const { data } = await apiClient.get<RecitersResponse>("/audio/reciters");
+    return data.recitations;
+  },
+
+  getRecitationsByChapter: async (
+    recitationId: number,
+    chapterNumber: number | string,
+  ): Promise<AudioFile[]> => {
+    const { data } = await apiClient.get<RecitationsResponse>(
+      `/audio/recitations/${recitationId}/by_chapter/${chapterNumber}`,
+    );
+    return data.audio_files;
+  },
 };
 
 // --- TanStack Query Hooks ---
@@ -195,6 +216,33 @@ export const useTranslationsByChapter = (
     queryFn: () => quranApi.getTranslationsByChapter(translationId, chapterId),
     enabled: !!chapterId && !!translationId,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours — translations are static
+  });
+};
+
+export const useReciters = () => {
+  return useQuery({
+    queryKey: ["audio", "reciters"],
+    queryFn: quranApi.getReciters,
+    staleTime: Infinity,
+  });
+};
+
+export const useRecitationsByChapter = (
+  recitationId: number,
+  chapterNumber: number | string,
+) => {
+  return useQuery({
+    queryKey: [
+      "audio",
+      "recitations",
+      recitationId.toString(),
+      "chapter",
+      chapterNumber.toString(),
+    ],
+    queryFn: () =>
+      quranApi.getRecitationsByChapter(recitationId, chapterNumber),
+    enabled: !!recitationId && !!chapterNumber,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 };
 
