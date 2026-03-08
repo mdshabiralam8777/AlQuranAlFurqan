@@ -16,7 +16,7 @@ export const defaultLanguage = ["en", "ar", "ur"].includes(systemLocale)
   : "en";
 
 i18n.use(initReactI18next).init({
-  compatibilityJSON: "v3",
+  compatibilityJSON: "v4",
   resources: {
     en: { translation: en },
     ar: { translation: ar },

@@ -176,11 +176,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: Spacing["2xl"],
+    marginVertical: Spacing.xxl,
   },
   infoContainer: {
     alignItems: "center",
-    marginBottom: Spacing["2xl"],
+    marginBottom: Spacing.xxl,
   },
   title: {
     fontSize: 28,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     marginTop: Spacing.lg,
   },
   playbackContainer: {
-    paddingBottom: Spacing["2xl"],
+    paddingBottom: Spacing.xxl,
   },
   progressRow: {
     flexDirection: "row",
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: Spacing["2xl"],
+    gap: Spacing.xxl,
   },
   controlButton: {
     padding: Spacing.sm,

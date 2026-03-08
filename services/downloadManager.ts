@@ -1,6 +1,6 @@
 import * as FileSystem from "expo-file-system";
 
-const AUDIO_DIR = `${FileSystem.documentDirectory}audio/`;
+const AUDIO_DIR = `${(FileSystem as any).documentDirectory}audio/`;
 
 // Ensure the audio directory exists
 export const initDownloadManager = async () => {

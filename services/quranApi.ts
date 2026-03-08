@@ -177,7 +177,21 @@ const quranApi = {
     const { data } = await apiClient.get<RecitationsResponse>(
       `/audio/recitations/${recitationId}/by_chapter/${chapterNumber}`,
     );
-    return data.audio_files;
+
+    // Normalize audio URLs
+    const audioFiles = data.audio_files.map((file: any) => {
+      let rawUrl = file.audio_url || file.url;
+      if (rawUrl && !rawUrl.startsWith("http") && !rawUrl.startsWith("//")) {
+        // Prepend the standard Quran.com audio CDN if it's a relative path
+        rawUrl = `https://verses.quran.com/${rawUrl}`;
+      }
+      return {
+        ...file,
+        audio_url: rawUrl,
+      };
+    });
+
+    return audioFiles as AudioFile[];
   },
 };
 
