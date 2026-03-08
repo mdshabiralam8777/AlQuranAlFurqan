@@ -17,6 +17,26 @@ import { DevSettings, I18nManager } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 
+// --- Global Error Handlers to prevent silent freezes ---
+if (__DEV__ === false) {
+  // Catch unhandled promise rejections that kill the thread silently
+  require("promise/setimmediate/rejection-tracking").enable({
+    allRejections: true,
+    onUnhandled: (id: string, error: any) => {
+      console.warn("Unhandled Promise Rejection:", error);
+      // Force splash to hide so user isn't stuck forever
+      SplashScreen.hideAsync().catch(() => {});
+    },
+    onHandled: () => {},
+  });
+
+  // Catch synchronous render fatals
+  ErrorUtils.setGlobalHandler((e, isFatal) => {
+    console.error("Global JS Error (Fatal: " + isFatal + "):", e);
+    SplashScreen.hideAsync().catch(() => {});
+  });
+}
+
 import { AppThemeProvider, useAppTheme } from "@/context/ThemeContext";
 import { useSettingsStore } from "@/store/settingsStore";
 import "../i18n";
