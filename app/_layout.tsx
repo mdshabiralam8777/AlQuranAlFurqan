@@ -27,7 +27,11 @@ import { PlaybackService } from "@/services/playbackService";
 
 import TrackPlayer from "react-native-track-player";
 
-TrackPlayer.registerPlaybackService(() => PlaybackService);
+try {
+  TrackPlayer.registerPlaybackService(() => PlaybackService);
+} catch (error) {
+  console.warn("Failed to register TrackPlayer service:", error);
+}
 
 SplashScreen.preventAutoHideAsync();
 
@@ -74,7 +78,10 @@ function RootStack() {
   }, [appLanguage, i18n]);
 
   useEffect(() => {
-    audioService.setupPlayer();
+    // Fire and forget, but catch errors to prevent hanging
+    audioService.setupPlayer().catch((err) => {
+      console.warn("audioService.setupPlayer failed", err);
+    });
   }, []);
 
   return (
