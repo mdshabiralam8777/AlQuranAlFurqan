@@ -14,11 +14,17 @@ const getBaseUrl = () => {
   if (process.env.EXPO_PUBLIC_API_BASE_URL) {
     return process.env.EXPO_PUBLIC_API_BASE_URL;
   }
-  // Android emulator needs 10.0.2.2 to reach the Mac's localhost
-  if (Platform.OS === "android") {
-    return "http://10.0.2.2:3001/api";
+
+  // If no environment variable is provided, default to the production URL
+  if (!__DEV__) {
+    return "https://alquranalfurqan.onrender.com/api";
   }
-  return "http://localhost:3001/api";
+
+  // Fallbacks for local development when env vars are missing
+  if (Platform.OS === "android") {
+    return "http://10.0.2.2:3001/api"; // Android Emulator
+  }
+  return "http://localhost:3001/api"; // iOS Simulator / Web
 };
 
 const API_BASE_URL = getBaseUrl();
