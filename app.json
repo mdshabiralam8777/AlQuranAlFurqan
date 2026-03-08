@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "alquranalfurqan",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.alquran.alfurqan"
@@ -41,7 +41,8 @@
           }
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "react-native-track-player"
     ],
     "experiments": {
       "typedRoutes": true,

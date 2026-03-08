@@ -60,12 +60,16 @@ function RootStack() {
       I18nManager.allowRTL(isRtl);
       I18nManager.forceRTL(isRtl);
 
-      // Reload app to apply layout changes
-      if (__DEV__) {
-        DevSettings.reload();
-      } else {
-        Updates.reloadAsync().catch(() => {});
-      }
+      // Reload app to apply layout changes (delayed slightly to prevent race conditions)
+      setTimeout(() => {
+        if (__DEV__) {
+          DevSettings.reload();
+        } else {
+          Updates.reloadAsync().catch((err) => {
+            console.warn("Updates.reloadAsync failed", err);
+          });
+        }
+      }, 100);
     }
   }, [appLanguage, i18n]);
 
@@ -120,9 +124,17 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded || error) {
-      SplashScreen.hideAsync();
+      SplashScreen.hideAsync().catch(() => {});
     }
   }, [loaded, error]);
+
+  // Fallback to hide splash screen after 3 seconds just in case fonts or initial state hang
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      SplashScreen.hideAsync().catch(() => {});
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!loaded && !error) {
     return null;
