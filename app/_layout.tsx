@@ -145,7 +145,7 @@ export default function RootLayout() {
     Inter_700Bold,
     Amiri_400Regular,
     Amiri_700Bold,
-    "KFGQPC-Uthmanic-Hafs": require("../assets/fonts/KFGQPC Uthman Taha Naskh Regular.ttf"),
+    "KFGQPC-Uthmanic-Hafs": require("../assets/fonts/KFGQPC_Uthman_Taha_Naskh_Regular.ttf"),
     "Gulzar-Regular": require("../assets/fonts/Gulzar-Regular.ttf"),
   });
 

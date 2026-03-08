@@ -23,11 +23,6 @@ class AudioService {
           2, // Capability.SeekTo
           3, // Capability.Stop
         ],
-        compactCapabilities: [
-          0, // Capability.Play
-          1, // Capability.Pause
-          4, // Capability.SkipToNext
-        ],
       });
 
       isSetup = true;
