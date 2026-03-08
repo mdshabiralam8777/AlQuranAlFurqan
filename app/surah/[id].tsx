@@ -16,6 +16,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Spacing } from "@/constants/spacing";
 import { BorderRadius } from "@/constants/typography";
 import { useAppTheme } from "@/context/ThemeContext";
+import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import {
   DEFAULT_TRANSLATION_ID,
   useChapters,
