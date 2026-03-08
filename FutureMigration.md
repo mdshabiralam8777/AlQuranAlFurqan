@@ -59,3 +59,33 @@ Before any of the above, the project needs:
 1. Introduce `expo-sqlite` or `@nozbe/watermelondb`.
 2. Move JSON content (`data/duas/*.json`, `data/favorites.ts`, `data/info.ts`) into a pre-populated SQLite database file shipped with the app assets.
 3. Replace synchronous direct array imports with async database queries.
+
+---
+
+## 5. Backend API Deployment (Production Release)
+
+**Why:** Currently, the app relies on a local Mac IP address (`192.168.x.x`) configured in `eas.json` and `.env.local` to reach the Node.js Express backend. This works only on the local Wi-Fi network. For testing anywhere or a public TestFlight/Play Store release, the backend must be hosted remotely.
+
+**Migration Steps:**
+
+1. Deploy the `backend/` Node.js folder to a permanent cloud provider (e.g., Render, Railway, DigitalOcean, or Heroku).
+2. The cloud provider will provision a public URL (e.g., `https://alquran-api.onrender.com`).
+3. Update the `eas.json` build profiles to explicitly point to the production backend:
+```json
+{
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "env": {
+         "EXPO_PUBLIC_API_BASE_URL": "https://alquran-api.onrender.com/api"
+      }
+    },
+    "production": {
+      "env": {
+         "EXPO_PUBLIC_API_BASE_URL": "https://alquran-api.onrender.com/api"
+      }
+    }
+  }
+}
+```
+4. Run the EAS build command for production/preview. The public API address will be baked into the APK/AAB or IPA, ensuring it works seamlessly on cellular data or any external Wi-Fi network.
